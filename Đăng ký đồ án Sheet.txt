@@ -1,0 +1,16 @@
+Chức năng chính:
+   - Login-Register User/Admin
+   - Tìm kiếm,lọc,xem danh sách các Hotel/Homestay theo filter ( địa điểm, giá, rating... )
+   - User/Khách hàng Tạo đánh giá ,reviews,upload hình ảnh checkin...
+   - Booking Online
+   - Voucher
+Chức năng nâng cao:
+   - Chat Realtime/ChatBot với khách hàng.
+   - Thống kê đánh giá , bình luận.
+Công nghệ sử dụng:
+   - Front-End : ReactJS.
+   - Back-end : NodeJS , RESTapi.
+   - Database : MongoDB.
+   - Khác : Postman , Github.
+Kiến trúc hệ thống:
+   - Modular.
