@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUserCircle, FaHeart, FaList, FaSearch, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
-import { login, register, logout } from '../../actions/userActions';
+import { login, register, logout, resendOtp, verifyOtp } from '../../actions/userActions';
 import OtpModal from '../ui/OtpModal';
 import axios from 'axios';
 import ForgotPasswordModal from '../ui/ForgotPasswordModal';
@@ -309,7 +309,7 @@ const Header = () => {
               </div>
               <div>
                 {authTab==='login' ? (
-                  <form onSubmit={e => {
+                  <form onSubmit={async e => {
                     e.preventDefault();
                     setLoginError('');
                     if (!loginEmail.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
@@ -320,35 +320,39 @@ const Header = () => {
                       setLoginError('Mật khẩu phải từ 6 ký tự!');
                       return;
                     }
-                    dispatch(login(loginEmail, loginPassword))
-                      .then(() => {
-                        setLoginEmail('');
-                        setLoginPassword('');
-                        setShowAuthModal(false);
-                        dispatch({
-                          type: 'SET_NOTIFICATION',
-                          payload: { type: 'success', message: 'Đăng nhập thành công!' },
-                        });
-                      })
-                      .catch(error => {
-                        // Ưu tiên message backend trả về, fallback sang lỗi mặc định
-                        const msg = error?.response?.data?.message || error.message || 'Đăng nhập thất bại';
-                        setLoginError(msg);
+                    try {
+                      await dispatch(login(loginEmail, loginPassword));
+                      // Chỉ thực hiện các bước sau nếu đăng nhập thành công (không có lỗi)
+                      setLoginEmail('');
+                      setLoginPassword('');
+                      setShowAuthModal(false);
+                      dispatch({
+                        type: 'SET_NOTIFICATION',
+                        payload: { type: 'success', message: 'Đăng nhập thành công!' },
                       });
+                    } catch (error) {
+                      // Ưu tiên message backend trả về, fallback sang lỗi mặc định
+                      const msg = error?.response?.data?.message || error.message || 'Đăng nhập thất bại';
+                      setLoginError(msg === 'Request failed with status code 401' || msg === 'Unauthorized' 
+                        ? 'Email hoặc mật khẩu không đúng!' 
+                        : msg);
+                      // Không đóng modal khi có lỗi
+                    }
                   }}>
-                    {loginError && <div className="mb-2 text-[#FFB85C] text-sm">{loginError}</div>}
-                    {/* Nếu không có loginError, kiểm tra lỗi từ redux */}
-                    {!loginError && userLogin.error && (
-                      <div className="mb-2 text-[#FFB85C] text-sm">
-                        {/* Nếu backend trả về đúng message tiếng Việt thì show luôn, nếu là 401 mặc định thì show tiếng Việt thân thiện */}
-                        {userLogin.error === 'Request failed with status code 401' || userLogin.error === 'Unauthorized' ?
-                          'Email hoặc mật khẩu không đúng!'
-                          : userLogin.error}
+                    {loginError && (
+                      <div className="mb-2 p-2 bg-[#3a1c1c] border border-[#ff8c8c] rounded-md text-[#FFB85C] text-sm">
+                        <strong>Lỗi đăng nhập:</strong> {loginError}
                       </div>
                     )}
-                    {/* Nếu lỗi là 401 mặc định, show tiếng Việt */}
-                    {!loginError && userLogin.error === 'Request failed with status code 401' && (
-                      <div className="mb-2 text-[#FFB85C] text-sm">Email hoặc mật khẩu không đúng!</div>
+                    {/* Nếu không có loginError, kiểm tra lỗi từ redux */}
+                    {!loginError && userLogin.error && (
+                      <div className="mb-2 p-2 bg-[#3a1c1c] border border-[#ff8c8c] rounded-md text-[#FFB85C] text-sm">
+                        <strong>Lỗi đăng nhập:</strong> {
+                          userLogin.error === 'Request failed with status code 401' || userLogin.error === 'Unauthorized' ?
+                          'Email hoặc mật khẩu không đúng!'
+                          : userLogin.error
+                        }
+                      </div>
                     )}
                     <div className="mb-4">
                       <label className="block mb-1 text-gray-300 font-semibold">Email</label>
@@ -404,6 +408,8 @@ const Header = () => {
                       return;
                     }
                     try {
+                      // Use the existing register endpoint but make sure
+                      // we treat the account as pending until OTP verification
                       await axios.post('/api/users/register', {
                         user_name: registerName,
                         email: registerEmail,
@@ -575,7 +581,7 @@ const Header = () => {
           onSubmit={async (otp) => {
             setOtpError('');
             try {
-              // Gửi OTP + thông tin đăng ký lên backend để xác thực và tạo user
+              // Use the existing verify-otp endpoint
               const { data } = await axios.post('/api/users/verify-otp', {
                 ...pendingRegister,
                 otp
@@ -598,9 +604,7 @@ const Header = () => {
           onResend={async () => {
             setOtpError('');
             try {
-              await axios.post('/api/users/resend-otp', {
-                ...pendingRegister
-              });
+              await dispatch(resendOtp(pendingRegister));
               dispatch({
                 type: 'SET_NOTIFICATION',
                 payload: {

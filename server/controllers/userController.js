@@ -104,6 +104,50 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Resend OTP for verification
+// @route   POST /api/users/resend-otp
+// @access  Public
+const resendOtp = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+
+  // Find the temporary user by email
+  const tempUser = await User.findOne({ email, is_verified: false });
+  if (!tempUser) {
+    res.status(400);
+    throw new Error('Không tìm thấy thông tin đăng ký hoặc đã xác thực.');
+  }
+
+  // Generate new 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+  // Update OTP in DB
+  tempUser.email_otp = otp;
+  tempUser.email_otp_expires = otpExpires;
+  await tempUser.save();
+
+  // Send new OTP via email
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: 'Mã xác thực mới cho tài khoản của bạn',
+    html: `
+      <h1>Xin chào ${tempUser.user_name}!</h1>
+      <p>Theo yêu cầu của bạn, đây là mã xác thực OTP mới:</p>
+      <div style="font-size: 2rem; font-weight: bold; letter-spacing: 8px; margin: 20px 0;">${otp}</div>
+      <p>Vui lòng nhập mã OTP này vào trang đăng ký để hoàn tất quá trình xác thực tài khoản.</p>
+      <p>Mã này sẽ hết hạn sau 10 phút.</p>
+      <p>Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này.</p>
+    `
+  };
+  await transporter.sendMail(mailOptions);
+
+  res.status(200).json({
+    message: `Đã gửi mã OTP mới tới email ${email}. Vui lòng kiểm tra email và nhập mã OTP để xác nhận đăng ký.`,
+    otpExpires
+  });
+});
+
 // @desc    Verify email OTP và tạo user thật sự
 // @route   POST /api/users/verify-otp
 // @access  Public
@@ -439,4 +483,5 @@ module.exports = {
   confirmPhoneVerification,
   verifyEmailOtp,
   checkUniqueUserInfo,
+  resendOtp,
 };
