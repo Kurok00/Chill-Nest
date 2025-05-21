@@ -11,7 +11,8 @@ const {
   changePassword,
   sendPhoneVerification,
   confirmPhoneVerification,
-  verifyEmailOtp, // Thêm hàm xác thực OTP
+  verifyEmailOtp,
+  checkUniqueUserInfo, // Thêm controller mới
 } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -19,9 +20,10 @@ const { protect } = require('../middleware/authMiddleware');
 router.post('/login', loginUser);
 router.post('/register', registerUser);
 router.get('/verify/:token', verifyEmail);
-router.post('/verify-otp', verifyEmailOtp); // Thêm route xác thực OTP
+router.post('/verify-otp', verifyEmailOtp);
 router.post('/forgotpassword', forgotPassword);
 router.post('/resetpassword/:token', resetPassword);
+router.post('/check-unique', checkUniqueUserInfo); // Thêm route mới
 
 // Protected routes
 router.get('/profile', protect, getUserProfile);

@@ -265,7 +265,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
   await user.save();
   
   // Send reset email
-  const resetUrl = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
+  let frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
   
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -397,6 +398,27 @@ const confirmPhoneVerification = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Xác thực số điện thoại thành công' });
 });
 
+// @desc    Check if username, email, or phone number exists (for real-time validation)
+// @route   POST /api/users/check-unique
+// @access  Public
+const checkUniqueUserInfo = asyncHandler(async (req, res) => {
+  const { user_name, email, phone_number } = req.body;
+  let exists = {};
+  if (user_name) {
+    const user = await User.findOne({ user_name });
+    exists.user_name = !!user;
+  }
+  if (email) {
+    const user = await User.findOne({ email });
+    exists.email = !!user;
+  }
+  if (phone_number) {
+    const user = await User.findOne({ phone_number });
+    exists.phone_number = !!user;
+  }
+  res.json({ exists });
+});
+
 module.exports = {
   loginUser,
   registerUser,
@@ -409,4 +431,5 @@ module.exports = {
   sendPhoneVerification,
   confirmPhoneVerification,
   verifyEmailOtp,
+  checkUniqueUserInfo,
 };
