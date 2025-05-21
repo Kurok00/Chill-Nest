@@ -77,3 +77,31 @@ npm start
 
 ## Người phát triển
 - Thông tin về nhóm phát triển dự án
+
+# CapStone K23
+
+Dự án CapStone K23 - VTC Academy.
+
+## Cài đặt
+
+```bash
+# Cài đặt dependencies cho server
+cd server
+npm install
+
+# Cài đặt dependencies cho client
+cd client
+npm install
+```
+
+## Chạy dự án
+
+```bash
+# Chạy server
+cd server
+npm start
+
+# Chạy client
+cd client
+npm start
+```

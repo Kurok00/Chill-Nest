@@ -63,7 +63,25 @@ const registerUser = asyncHandler(async (req, res) => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const otpExpires = Date.now() + 10 * 60 * 1000; // 10 phút
 
-  // Lưu thông tin tạm vào cache hoặc trả về FE (ở đây trả về FE, FE sẽ gửi lại khi xác thực OTP)
+  // Lưu OTP vào DB tạm (tạo user tạm với trạng thái chưa xác thực)
+  let tempUser = await User.findOne({ email });
+  if (!tempUser) {
+    tempUser = new User({
+      user_name,
+      email,
+      password,
+      phone_number,
+      is_verified: false,
+      email_otp: otp,
+      email_otp_expires: otpExpires
+    });
+    await tempUser.save();
+  } else {
+    tempUser.email_otp = otp;
+    tempUser.email_otp_expires = otpExpires;
+    await tempUser.save();
+  }
+
   // Gửi OTP qua email
   const mailOptions = {
     from: process.env.EMAIL_USER,
@@ -80,12 +98,9 @@ const registerUser = asyncHandler(async (req, res) => {
   };
   await transporter.sendMail(mailOptions);
 
-  // Trả về cho FE thông tin cần thiết để xác thực OTP (KHÔNG tạo user ở đây)
   res.status(200).json({
     message: `Đã gửi mã OTP tới email ${email}. Vui lòng kiểm tra email và nhập mã OTP để xác nhận đăng ký.`,
-    otpExpires,
-    tempUser: { user_name, email, password, phone_number },
-    // Không trả về otp thực tế!
+    otpExpires
   });
 });
 
@@ -94,40 +109,32 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Public
 const verifyEmailOtp = asyncHandler(async (req, res) => {
   const { user_name, email, password, phone_number, otp } = req.body;
-  // FE phải gửi lại toàn bộ thông tin + otp
 
-  // Kiểm tra user đã tồn tại chưa
-  const userExists = await User.findOne({ email });
-  if (userExists) {
+  // Tìm user tạm theo email
+  const tempUser = await User.findOne({ email, is_verified: false });
+  if (!tempUser) {
     res.status(400);
-    throw new Error('Người dùng đã tồn tại');
+    throw new Error('Không tìm thấy thông tin đăng ký hoặc đã xác thực.');
   }
 
-  // Kiểm tra OTP (ở đây demo: FE phải lưu otp và otpExpires, thực tế nên lưu cache server)
-  // Để đơn giản, ta giả định FE gửi đúng otp vừa gửi mail (bảo mật thực tế nên lưu otp server-side)
-  // Nếu muốn bảo mật hơn, dùng Redis hoặc DB tạm để lưu otp
-  // Ở đây chỉ kiểm tra otp có đúng 6 số
-  if (!otp || otp.length !== 6) {
+  // Kiểm tra OTP và hạn
+  if (!otp || otp.length !== 6 || tempUser.email_otp !== otp || !tempUser.email_otp_expires || tempUser.email_otp_expires < Date.now()) {
     res.status(400);
-    throw new Error('Mã OTP không hợp lệ');
+    throw new Error('Mã OTP không đúng hoặc đã hết hạn!');
   }
 
-  // Tạo user thật sự
-  const user = await User.create({
-    user_name,
-    email,
-    password,
-    phone_number,
-    role: 'user',
-    is_verified: true,
-  });
+  // Xác thực thành công, cập nhật trạng thái user
+  tempUser.is_verified = true;
+  tempUser.email_otp = undefined;
+  tempUser.email_otp_expires = undefined;
+  await tempUser.save();
 
   res.status(201).json({
-    _id: user._id,
-    user_name: user.user_name,
-    email: user.email,
-    role: user.role,
-    is_verified: user.is_verified,
+    _id: tempUser._id,
+    user_name: tempUser.user_name,
+    email: tempUser.email,
+    role: tempUser.role,
+    is_verified: tempUser.is_verified,
     message: 'Đăng ký và xác thực thành công! Bạn có thể đăng nhập ngay bây giờ.',
   });
 });

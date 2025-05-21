@@ -48,7 +48,7 @@ const RegisterPage = () => {
     setMessage('');
     try {
       // Gọi trực tiếp API đăng ký, không dùng dispatch để lấy đúng response
-      const res = await axios.post('http://localhost:5000/api/users/register', {
+      const res = await axios.post('/api/users/register', {
         user_name,
         email,
         password,
@@ -73,7 +73,7 @@ const RegisterPage = () => {
     setOtpError('');
     try {
       // Gửi lại toàn bộ thông tin + otp để tạo user thật sự
-      await axios.post('http://localhost:5000/api/users/verify-otp', {
+      await axios.post('/api/users/verify-otp', {
         user_name,
         email: registerEmail,
         password,
@@ -126,6 +126,11 @@ const RegisterPage = () => {
                   placeholder="Nhập OTP"
                   value={otp}
                   onChange={e => setOtp(e.target.value.replace(/\D/g, ''))}
+                  onKeyDown={e => {
+                    if (e.key === 'Backspace' || e.key === 'Delete') {
+                      setOtp(otp.slice(0, -1));
+                    }
+                  }}
                 />
               </div>
               {otpError && <div className="text-red-400 text-center mb-2 font-semibold animate-shake">{otpError}</div>}

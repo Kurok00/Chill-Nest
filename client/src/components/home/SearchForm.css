@@ -1,0 +1,334 @@
+/* Custom styles for the Traveloka-inspired search form */
+
+/* Dropdown positioning fixes */
+.dropdown-fix {
+  transform-origin: top center;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Enhanced dropdown styles for Traveloka-like experience */
+.location-dropdown {
+  position: fixed !important;
+  bottom: auto !important; /* Đổi từ bottom: 0 */
+  top: 50% !important; /* Đặt vị trí ở giữa màn hình */
+  left: 50% !important;
+  transform: translate(-50%, -40%) !important; /* Dịch chuyển để căn giữa */
+  width: 90% !important; /* Giới hạn chiều rộng */
+  max-width: 500px !important;
+  height: auto !important; /* Tự động theo nội dung */
+  max-height: 50vh !important; /* Giới hạn chiều cao tối đa */
+  z-index: 50 !important; /* Giảm z-index xuống mức hợp lý */
+  border-radius: 1rem !important; /* Làm tròn tất cả các góc */
+  border-width: 1px !important;
+  overflow-y: auto !important;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.15) !important;
+  animation: fade-in 0.2s ease-out !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 768px) {
+  .location-dropdown {
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    max-height: 80vh;
+    top: auto;
+    bottom: 1rem;
+    border-radius: 1rem;
+  }
+}
+
+.guests-dropdown {
+  max-width: 380px;
+  width: max-content !important;
+  transform-origin: top center;
+  top: 100% !important; /* Đảm bảo dropdown xuất hiện bên dưới input */
+  bottom: auto !important;
+  left: auto !important;
+  right: 0 !important;
+}
+
+/* Ensure dropdowns aren't constrained by parent container */
+.dropdown-container {
+  position: relative;
+  z-index: 1000;
+}
+
+.dropdown-container > div[class*="absolute"] {
+  position: absolute;
+}
+
+/* Position fixes for dropdowns */
+@media (min-width: 768px) {
+  .location-relative {
+    position: relative !important;
+  }
+  
+  .guests-dropdown {
+    position: absolute !important;
+    right: 0 !important;
+    left: auto !important;
+    top: 100% !important;
+  }
+}
+
+/* Fix for dropdown positioning */
+.location-dropdown, .guests-dropdown {
+  position: absolute !important;
+  top: 100% !important;
+  transform: none !important;
+}
+
+/* Mobile dropdown animations */
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.mobile-dropdown {
+  animation: slideUp 0.3s ease-out, fadeIn 0.3s ease-out;
+  z-index: 1050;
+}
+
+.desktop-dropdown {
+  animation: scaleIn 0.2s ease-out;
+  z-index: 1050;
+  transform-origin: top right;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Notification animation */
+.notification-fade {
+  animation: fadeIn 0.3s ease-out;
+  transition: opacity 0.3s ease-out;
+}
+
+/* Remove outer border from focused inputs */
+.react-datepicker__input-container input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Style the datepicker to match Traveloka's design */
+.react-datepicker {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.react-datepicker__header {
+  background-color: #f3f7ff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.react-datepicker__current-month {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.react-datepicker__day--selected {
+  background-color: #2563eb;
+  border-radius: 50%;
+  color: white;
+}
+
+.react-datepicker__day--in-range {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.react-datepicker__day--in-selecting-range {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #bfdbfe;
+  border-radius: 50%;
+  color: #2563eb;
+}
+
+.react-datepicker__day:hover {
+  background-color: #f3f7ff;
+  border-radius: 50%;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #1e40af;
+}
+
+/* Add scrollbar-hide utility for browsers that don't support it natively */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Ensure form transitions are smooth */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Traveloka's blue color palette for background gradients */
+.bg-traveloka-blue {
+  background-color: #0064d2;
+}
+
+.bg-traveloka-blue-dark {
+  background-color: #00509e;
+}
+
+.bg-traveloka-orange {
+  background-color: #ff5e1f;
+}
+
+/* Add hover effect on buttons and interactive elements */
+button.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 640px) {
+  .react-datepicker-popper {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Add these styles to ensure dropdowns appear correctly */
+.location-relative {
+  position: relative;
+}
+
+/* Ensure location dropdown doesn't get clipped */
+.location-dropdown {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80vh;
+  border-radius: 1rem 1rem 0 0;
+  z-index: 9999;
+}
+
+/* Thiết lập lại CSS cho dropdown */
+.location-dropdown {
+  position: fixed !important;
+  bottom: auto !important; /* Đổi từ bottom: 0 */
+  top: 50% !important; /* Đặt vị trí ở giữa màn hình */
+  left: 50% !important;
+  transform: translate(-50%, -40%) !important; /* Dịch chuyển để căn giữa */
+  width: 90% !important; /* Giới hạn chiều rộng */
+  max-width: 500px !important;
+  height: auto !important; /* Tự động theo nội dung */
+  max-height: 50vh !important; /* Giới hạn chiều cao tối đa */
+  z-index: 50 !important; /* Giảm z-index xuống mức hợp lý */
+  border-radius: 1rem !important; /* Làm tròn tất cả các góc */
+  border-width: 1px !important;
+  overflow-y: auto !important;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.15) !important;
+  animation: fade-in 0.2s ease-out !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Animation hiệu ứng */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -30%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -40%);
+  }
+}
+
+/* Backdrop cho mobile */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40; /* Thấp hơn dropdown */
+}
+
+/* Thiết lập cho desktop */
+@media (min-width: 768px) {
+  .location-dropdown {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    width: 100% !important;
+    transform: none !important;
+    max-width: none !important;
+    max-height: 350px !important; /* Giới hạn chiều cao trên desktop */
+    border-radius: 0.5rem !important;
+    margin-top: 0.5rem !important;
+    animation: dropdown-slide 0.2s ease-out !important;
+  }
+  
+  @keyframes dropdown-slide {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Đảm bảo thanh cuộn trông đẹp hơn */
+.location-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.location-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.location-dropdown::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.location-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* Đảm bảo nội dung trong dropdown không bị che khuất */
+.location-dropdown-content {
+  padding-bottom: 10px !important;
+}
+
+/* Đảm bảo dropdown hiển thị đúng trên các container khác nhau */
+.overflow-hidden {
+  overflow: visible !important;
+}

@@ -17,27 +17,35 @@ const LoginPage = () => {
   const { loading, error, userInfo } = userLogin;
   
   const redirect = location.search ? location.search.split('=')[1] : '/';
-  
-  useEffect(() => {
+    useEffect(() => {
     if (userInfo) {
+      dispatch({
+        type: 'SET_NOTIFICATION',
+        payload: {
+          type: 'success',
+          message: 'Đăng nhập thành công',
+        },
+      });
       navigate(redirect);
     }
-  }, [navigate, userInfo, redirect]);
-    const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(login(email, password))
-      .then(() => {
-        dispatch({
-          type: 'SET_NOTIFICATION',
-          payload: {
-            type: 'success',
-            message: 'Đăng nhập thành công',
-          },
-        });
-      })
-      .catch((error) => {
-        // Lỗi đã được xử lý trong action
+  }, [navigate, userInfo, redirect, dispatch]);
+  
+  // Tách useEffect xử lý lỗi ra riêng để tránh navigate khi có lỗi
+  useEffect(() => {
+    if (error) {
+      dispatch({
+        type: 'SET_NOTIFICATION',
+        payload: {
+          type: 'error',
+          message: error,
+        },
       });
+    }
+  }, [error, dispatch]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(login(email, password));
   };
   
   return (
@@ -54,10 +62,10 @@ const LoginPage = () => {
             </Link>
           </p>
         </div>
-        
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span className="block sm:inline">{error}</span>
+          {error && (
+          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded" role="alert">
+            <p className="font-medium">Lỗi đăng nhập</p>
+            <p>{error}</p>
           </div>
         )}
         
