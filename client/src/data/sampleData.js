@@ -397,3 +397,272 @@ export const currentPromotions = [
     ]
   }
 ];
+
+// Dữ liệu mẫu cho homestay
+export const sampleHomestays = [
+  {
+    _id: 'h1',
+    name: 'The Kupid Homestay',
+    address: '47 Đặng Thái Thân, Đà Lạt',
+    price: 450000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/thekupid_homestay_dalat.jpg',
+    rating: 4.7,
+    description: 'Homestay view rừng thông, decor trẻ trung, nhiều góc chill sống ảo, gần trung tâm Đà Lạt.',
+    amenities: ['Wifi', 'Bếp chung', 'Sân vườn', 'BBQ', 'Chỗ đậu xe'],
+    location: { lat: 11.9404, lng: 108.4583 }
+  },
+  {
+    _id: 'h2',
+    name: 'Là Nhà Homestay',
+    address: '77 Hoàng Diệu, Đà Lạt',
+    price: 390000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/lanha_homestay_dalat.jpg',
+    rating: 4.8,
+    description: 'Không gian xanh, yên tĩnh, nhiều phòng dorm và phòng đôi, decor vintage, có quán cafe trong khuôn viên.',
+    amenities: ['Wifi', 'Cafe', 'Bếp chung', 'Sân vườn'],
+    location: { lat: 11.9462, lng: 108.4419 }
+  },
+  {
+    _id: 'h3',
+    name: 'Chill House Homestay',
+    address: '12 Nguyễn Trãi, Nha Trang',
+    price: 520000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/chillhouse_homestay_nhatrang.jpg',
+    rating: 4.6,
+    description: 'Homestay sát biển, phòng rộng, ban công view biển, decor hiện đại, gần chợ đêm Nha Trang.',
+    amenities: ['Wifi', 'Máy lạnh', 'Bếp', 'Ban công', 'Gần biển'],
+    location: { lat: 12.2388, lng: 109.1967 }
+  },
+  {
+    _id: 'h4',
+    name: 'The Local Homestay',
+    address: '5 Lê Lợi, Hội An',
+    price: 480000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/thelocal_homestay_hoian.jpg',
+    rating: 4.9,
+    description: 'Homestay phong cách Hội An cổ, gần phố cổ, chủ nhà thân thiện, có cho thuê xe đạp.',
+    amenities: ['Wifi', 'Xe đạp', 'Bếp', 'Sân vườn'],
+    location: { lat: 15.8794, lng: 108.3350 }
+  },
+  {
+    _id: 'h5',
+    name: 'Sapa Eco Homestay',
+    address: 'Bản Tả Van, Sapa',
+    price: 350000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/sapaeco_homestay_sapa.jpg',
+    rating: 4.5,
+    description: 'Homestay giữa ruộng bậc thang, view núi, không khí trong lành, trải nghiệm văn hoá bản địa.',
+    amenities: ['Wifi', 'Bếp', 'Sân vườn', 'View núi'],
+    location: { lat: 22.3402, lng: 103.8448 }
+  }
+];
+
+// Dữ liệu mẫu cho hotel
+export const sampleHotels = [
+  {
+    _id: 'ht1',
+    name: 'InterContinental Danang',
+    address: 'Bãi Bắc, Sơn Trà, Đà Nẵng',
+    price: 6500000,
+    image: 'https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517201226378-8affc1dfeeafe879121fc94652a7332f.png?tr=q-75,w-600',
+    rating: 4.9,
+    description: 'Khách sạn 5 sao, thiết kế sang trọng, view biển tuyệt đẹp, nhiều tiện ích cao cấp.',
+    amenities: ['Wifi', 'Hồ bơi', 'Spa', 'Nhà hàng', 'Gym'],
+    location: { lat: 16.123, lng: 108.321 }
+  },
+  {
+    _id: 'ht2',
+    name: 'Hotel Nikko Saigon',
+    address: '235 Nguyễn Văn Cừ, Quận 1, TP.HCM',
+    price: 2200000,
+    image: 'https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517201226378-8affc1dfeeafe879121fc94652a7332f.png?tr=q-75,w-400',
+    rating: 4.8,
+    description: 'Khách sạn trung tâm Sài Gòn, phòng rộng, buffet sáng ngon, dịch vụ chuyên nghiệp.',
+    amenities: ['Wifi', 'Nhà hàng', 'Gym', 'Spa', 'Bãi đậu xe'],
+    location: { lat: 10.762, lng: 106.682 }
+  },
+  {
+    _id: 'ht3',
+    name: 'Mường Thanh Luxury Nha Trang',
+    address: '60 Trần Phú, Nha Trang',
+    price: 1800000,
+    image: 'https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400',
+    rating: 4.7,
+    description: 'Khách sạn sát biển, hồ bơi vô cực, phòng view biển, gần chợ đêm.',
+    amenities: ['Wifi', 'Hồ bơi', 'Nhà hàng', 'Spa'],
+    location: { lat: 12.238, lng: 109.196 }
+  },
+  {
+    _id: 'ht4',
+    name: 'Hanoi La Siesta Hotel',
+    address: '94 Mã Mây, Hoàn Kiếm, Hà Nội',
+    price: 1600000,
+    image: 'https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200871912-592258729faec3c08e23d4f7c8c0da07.png?tr=q-75,w-400',
+    rating: 4.9,
+    description: 'Khách sạn boutique phố cổ, phòng ấm cúng, nhân viên thân thiện, buffet sáng đa dạng.',
+    amenities: ['Wifi', 'Nhà hàng', 'Spa', 'Xe đưa đón'],
+    location: { lat: 21.034, lng: 105.853 }
+  },
+  {
+    _id: 'ht5',
+    name: 'Premier Village Phu Quoc',
+    address: 'Ong Doi Cape, An Thoi, Phú Quốc',
+    price: 7200000,
+    image: 'https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400',
+    rating: 4.8,
+    description: 'Khu nghỉ dưỡng villa sát biển, hồ bơi riêng, dịch vụ 5 sao.',
+    amenities: ['Wifi', 'Hồ bơi', 'Nhà hàng', 'Spa', 'Bãi biển riêng'],
+    location: { lat: 10.010, lng: 104.004 }
+  },
+  {
+    _id: 'ht6',
+    name: 'Novotel Ha Long Bay',
+    address: '160 Hạ Long, Bãi Cháy, Quảng Ninh',
+    price: 2100000,
+    image: 'https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517201184025-b629781230030dbfc28bcbfb127286f6.png?tr=q-75,w-400',
+    rating: 4.6,
+    description: 'Khách sạn view vịnh Hạ Long, hồ bơi ngoài trời, gần Sun World.',
+    amenities: ['Wifi', 'Hồ bơi', 'Nhà hàng', 'Spa'],
+    location: { lat: 20.956, lng: 107.080 }
+  }
+];
+
+// Dữ liệu mẫu cho resort
+export const sampleResorts = [
+  {
+    _id: 'rs1',
+    name: 'Fusion Resort Cam Ranh',
+    address: 'Cam Hải Đông, Cam Lâm, Khánh Hòa',
+    price: 5200000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/fusionresort_camranh.jpg',
+    rating: 4.9,
+    description: 'Resort 5 sao, villa hồ bơi riêng, spa trọn gói, sát biển Bãi Dài.',
+    amenities: ['Wifi', 'Hồ bơi', 'Spa', 'Nhà hàng', 'Bãi biển riêng'],
+    location: { lat: 11.995, lng: 109.224 }
+  },
+  {
+    _id: 'rs2',
+    name: 'Six Senses Ninh Van Bay',
+    address: 'Ninh Vân, Ninh Hòa, Khánh Hòa',
+    price: 13500000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/sixsenses_ninhvanbay.jpg',
+    rating: 4.9,
+    description: 'Resort biệt lập, villa view biển, dịch vụ đẳng cấp quốc tế.',
+    amenities: ['Wifi', 'Hồ bơi', 'Spa', 'Nhà hàng', 'Bãi biển riêng'],
+    location: { lat: 12.397, lng: 109.281 }
+  },
+  {
+    _id: 'rs3',
+    name: 'Amanoi Resort',
+    address: 'Vĩnh Hy, Ninh Thuận',
+    price: 18000000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/amanoi_resort.jpg',
+    rating: 4.8,
+    description: 'Resort sang trọng, view vịnh Vĩnh Hy, villa hồ bơi riêng.',
+    amenities: ['Wifi', 'Hồ bơi', 'Spa', 'Nhà hàng', 'Bãi biển riêng'],
+    location: { lat: 11.732, lng: 109.170 }
+  },
+  {
+    _id: 'rs4',
+    name: 'The Anam Cam Ranh',
+    address: 'Long Beach, Cam Hải Đông, Cam Lâm',
+    price: 4300000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/theanam_camranh.jpg',
+    rating: 4.7,
+    description: 'Resort phong cách Indochine, nhiều hồ bơi, sát biển.',
+    amenities: ['Wifi', 'Hồ bơi', 'Spa', 'Nhà hàng', 'Bãi biển riêng'],
+    location: { lat: 12.002, lng: 109.217 }
+  },
+  {
+    _id: 'rs5',
+    name: 'Salinda Resort Phu Quoc',
+    address: 'Cửa Lấp, Dương Tơ, Phú Quốc',
+    price: 3900000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/salinda_resort_phuquoc.jpg',
+    rating: 4.8,
+    description: 'Resort boutique, sát biển, dịch vụ chuẩn 5 sao.',
+    amenities: ['Wifi', 'Hồ bơi', 'Spa', 'Nhà hàng', 'Bãi biển riêng'],
+    location: { lat: 10.180, lng: 103.963 }
+  },
+  {
+    _id: 'rs6',
+    name: 'Meliá Ho Tram Beach Resort',
+    address: 'Phước Thuận, Xuyên Mộc, Bà Rịa - Vũng Tàu',
+    price: 4100000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/melia_hotram.jpg',
+    rating: 4.7,
+    description: 'Resort sát biển, nhiều hồ bơi, khu vui chơi trẻ em.',
+    amenities: ['Wifi', 'Hồ bơi', 'Spa', 'Nhà hàng', 'Bãi biển riêng'],
+    location: { lat: 10.470, lng: 107.795 }
+  }
+];
+
+// Dữ liệu mẫu cho apartment
+export const sampleApartments = [
+  {
+    _id: 'ap1',
+    name: 'Vinhomes Central Park Apartment',
+    address: '208 Nguyễn Hữu Cảnh, Bình Thạnh, TP.HCM',
+    price: 1200000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/vinhomes_centralpark.jpg',
+    rating: 4.7,
+    description: 'Căn hộ cao cấp, view Landmark 81, đầy đủ tiện nghi, hồ bơi, gym.',
+    amenities: ['Wifi', 'Hồ bơi', 'Gym', 'Bãi đậu xe', 'Sân chơi trẻ em'],
+    location: { lat: 10.794, lng: 106.721 }
+  },
+  {
+    _id: 'ap2',
+    name: 'Masteri Thao Dien Apartment',
+    address: '159 Xa lộ Hà Nội, Thảo Điền, TP.HCM',
+    price: 1100000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/masteri_thaodien.jpg',
+    rating: 4.6,
+    description: 'Căn hộ hiện đại, gần Metro, nhiều tiện ích nội khu.',
+    amenities: ['Wifi', 'Hồ bơi', 'Gym', 'Bãi đậu xe'],
+    location: { lat: 10.800, lng: 106.740 }
+  },
+  {
+    _id: 'ap3',
+    name: 'The Sun Avenue Apartment',
+    address: '28 Mai Chí Thọ, An Phú, Quận 2, TP.HCM',
+    price: 950000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/thesunavenue_apartment.jpg',
+    rating: 4.5,
+    description: 'Căn hộ view sông Sài Gòn, nội thất mới, an ninh 24/7.',
+    amenities: ['Wifi', 'Hồ bơi', 'Gym', 'Bãi đậu xe'],
+    location: { lat: 10.780, lng: 106.749 }
+  },
+  {
+    _id: 'ap4',
+    name: 'GoldView Apartment',
+    address: '346 Bến Vân Đồn, Quận 4, TP.HCM',
+    price: 1050000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/goldview_apartment.jpg',
+    rating: 4.6,
+    description: 'Căn hộ trung tâm, hồ bơi lớn, gần chợ Bến Thành.',
+    amenities: ['Wifi', 'Hồ bơi', 'Gym', 'Bãi đậu xe'],
+    location: { lat: 10.762, lng: 106.700 }
+  },
+  {
+    _id: 'ap5',
+    name: 'Saigon Pearl Apartment',
+    address: '92 Nguyễn Hữu Cảnh, Bình Thạnh, TP.HCM',
+    price: 1150000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/saigonpearl_apartment.jpg',
+    rating: 4.7,
+    description: 'Căn hộ cao cấp, view sông, nhiều tiện ích nội khu.',
+    amenities: ['Wifi', 'Hồ bơi', 'Gym', 'Bãi đậu xe'],
+    location: { lat: 10.797, lng: 106.718 }
+  },
+  {
+    _id: 'ap6',
+    name: 'Estella Heights Apartment',
+    address: '88 Song Hành, An Phú, Quận 2, TP.HCM',
+    price: 1300000,
+    image: 'https://cdn1.ivivu.com/images/2023/03/16/10/estellaheights_apartment.jpg',
+    rating: 4.8,
+    description: 'Căn hộ cao cấp, hồ bơi tràn, gần Mega Mall.',
+    amenities: ['Wifi', 'Hồ bơi', 'Gym', 'Bãi đậu xe'],
+    location: { lat: 10.787, lng: 106.751 }
+  }
+];

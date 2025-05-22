@@ -7,6 +7,7 @@ import Notification from './components/ui/Notification';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import HotelDetailPage from './pages/HotelDetailPage';
 import ScrollToTop from './components/layout/ScrollToTop';
+import FilterPage from './pages/FilterPage';
 
 function AppContent() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function AppContent() {
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
           <Route path="/hotels/:id" element={<HotelDetailPage />} />
           <Route path="/homestays/:id" element={<HotelDetailPage />} />
+          <Route path="/search" element={<FilterPage />} />
         </Routes>
       </main>
       {!isResetPassword && <Footer />}
