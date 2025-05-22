@@ -41,7 +41,50 @@ export const featuredProperties = [
     },
     review_count: 845,
     is_featured: true,
-    is_verified: true
+    is_verified: true,
+    detail: "Vinpearl Resort & Spa Nha Trang là khu nghỉ dưỡng 5 sao đẳng cấp quốc tế, tọa lạc trên đảo Hòn Tre với bãi biển riêng tuyệt đẹp. Khuôn viên rộng lớn, nhiều tiện ích giải trí, nhà hàng sang trọng và dịch vụ spa cao cấp.",
+    policies: "Nhận phòng từ 14:00, trả phòng trước 12:00. Không hút thuốc trong phòng. Không mang thú cưng. Trẻ em dưới 6 tuổi miễn phí.",
+    extra_amenities: ["Xe đưa đón sân bay miễn phí", "Dịch vụ giặt là", "Phòng gym 24/7", "Khu vui chơi trẻ em"],
+    gallery: [
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-800", caption: "Toàn cảnh Vinpearl Resort & Spa Nha Trang", type: "exterior" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Lối vào chính sang trọng", type: "lobby" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Hồ bơi ngoài trời tuyệt đẹp", type: "pool" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Nhà hàng buffet sáng", type: "restaurant" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Phòng Deluxe Double view biển", type: "room", roomType: "Deluxe Double Room" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Phòng Family Suite rộng rãi", type: "room", roomType: "Family Suite" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Khu vui chơi trẻ em", type: "facility" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Spa cao cấp", type: "spa" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Phòng gym hiện đại", type: "gym" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Ban công hướng biển", type: "room", roomType: "Deluxe Double Room" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Phòng tắm sang trọng", type: "room", roomType: "Family Suite" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Khuôn viên xanh mát", type: "exterior" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Quầy bar cạnh hồ bơi", type: "bar" },
+      { url: "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400", caption: "Sảnh chờ sang trọng", type: "lobby" },
+    ],
+    rooms: [
+      {
+        name: "Deluxe Double Room",
+        description: "Phòng rộng rãi, view biển, 1 giường đôi lớn.",
+        price: 1800000,
+        amenities: ["wifi", "air_conditioning", "tv", "minibar", "balcony"],
+        images: [
+          "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400"
+        ],
+        max_guests: 2,
+        available: 3
+      },
+      {
+        name: "Family Suite",
+        description: "Phòng suite cho gia đình, 2 phòng ngủ, view biển.",
+        price: 3500000,
+        amenities: ["wifi", "air_conditioning", "tv", "minibar", "balcony", "bathtub"],
+        images: [
+          "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200921330-784c7f0f6798fdb7c3b14d23881d5090.jpeg?tr=q-75,w-400"
+        ],
+        max_guests: 4,
+        available: 2
+      }
+    ]
   },
   {
     _id: "prop2",
@@ -80,7 +123,34 @@ export const featuredProperties = [
     },
     review_count: 213,
     is_featured: true,
-    is_verified: true
+    is_verified: true,
+    detail: "Mai Châu Hideaway Homestay nằm giữa thung lũng xanh mát, không gian yên tĩnh, gần gũi thiên nhiên. Phù hợp nghỉ dưỡng, trải nghiệm văn hóa bản địa.",
+    policies: "Nhận phòng từ 13:00, trả phòng trước 11:00. Không hút thuốc trong phòng. Hỗ trợ đặt tour tham quan bản làng.",
+    extra_amenities: ["Thuê xe đạp miễn phí", "Bếp chung cho khách", "BBQ ngoài trời"],
+    rooms: [
+      {
+        name: "Standard Room",
+        description: "Phòng tiêu chuẩn, view núi, 1 giường đôi.",
+        price: 700000,
+        amenities: ["wifi", "mountain_view", "breakfast"],
+        images: [
+          "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200871912-592258729faec3c08e23d4f7c8c0da07.png?tr=q-75,w-400"
+        ],
+        max_guests: 2,
+        available: 5
+      },
+      {
+        name: "Family Bungalow",
+        description: "Bungalow cho gia đình, 2 giường đôi, gần hồ bơi.",
+        price: 1200000,
+        amenities: ["wifi", "breakfast", "pool"],
+        images: [
+          "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517200871912-592258729faec3c08e23d4f7c8c0da07.png?tr=q-75,w-400"
+        ],
+        max_guests: 4,
+        available: 1
+      }
+    ]
   },
   {
     _id: "prop3",
@@ -110,7 +180,23 @@ export const featuredProperties = [
       average: 4.9
     },
     review_count: 612,
-    is_featured: true
+    is_featured: true,
+    detail: "InterContinental Danang là khu nghỉ dưỡng sang trọng với thiết kế độc đáo, hòa mình vào thiên nhiên bán đảo Sơn Trà. Có nhiều nhà hàng, bar, hồ bơi vô cực.",
+    policies: "Nhận phòng từ 15:00, trả phòng trước 12:00. Không hút thuốc trong phòng. Có thể mang thú cưng nhỏ (có phụ phí).", 
+    extra_amenities: ["Spa cao cấp", "Dịch vụ xe điện nội khu", "Lớp yoga buổi sáng"],
+    rooms: [
+      {
+        name: "Premier Ocean View",
+        description: "Phòng cao cấp, view biển, ban công riêng.",
+        price: 6500000,
+        amenities: ["wifi", "air_conditioning", "tv", "balcony", "bathtub"],
+        images: [
+          "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517201226378-8affc1dfeeafe879121fc94652a7332f.png?tr=q-75,w-400"
+        ],
+        max_guests: 2,
+        available: 2
+      }
+    ]
   },
   {
     _id: "prop4",
@@ -139,7 +225,23 @@ export const featuredProperties = [
       average: 4.8
     },
     review_count: 143,
-    is_featured: true
+    is_featured: true,
+    detail: "Homestay ven sông yên bình, không gian mở, gần trung tâm phố cổ Hội An. Phù hợp nhóm bạn, gia đình nhỏ.",
+    policies: "Nhận phòng từ 12:00, trả phòng trước 11:00. Không tổ chức tiệc lớn sau 22:00.",
+    extra_amenities: ["Thuyền kayak miễn phí", "Sân vườn BBQ", "Dịch vụ thuê xe máy"],
+    rooms: [
+      {
+        name: "Riverside Room",
+        description: "Phòng hướng sông, 1 giường đôi, yên tĩnh.",
+        price: 900000,
+        amenities: ["wifi", "breakfast", "mountain_view"],
+        images: [
+          "https://ik.imagekit.io/tvlk/image/imageResource/2018/01/29/1517201184025-b629781230030dbfc28bcbfb127286f6.png?tr=q-75,w-400"
+        ],
+        max_guests: 2,
+        available: 2
+      }
+    ]
   }
 ];
 

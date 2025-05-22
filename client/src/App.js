@@ -5,6 +5,8 @@ import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
 import Notification from './components/ui/Notification';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import HotelDetailPage from './pages/HotelDetailPage';
+import ScrollToTop from './components/layout/ScrollToTop';
 
 function AppContent() {
   const location = useLocation();
@@ -18,6 +20,8 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+          <Route path="/hotels/:id" element={<HotelDetailPage />} />
+          <Route path="/homestays/:id" element={<HotelDetailPage />} />
         </Routes>
       </main>
       {!isResetPassword && <Footer />}
@@ -28,6 +32,7 @@ function AppContent() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <AppContent />
     </Router>
   );

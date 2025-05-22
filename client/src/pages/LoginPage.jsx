@@ -1,146 +1,124 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../actions/userActions';
-import { FaSignInAlt, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState('login'); // 'login' or 'register'
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   
   const userLogin = useSelector(state => state.userLogin);
-  const { loading, error, userInfo } = userLogin;
+  const { loading, error } = userLogin;
   
   const redirect = location.search ? location.search.split('=')[1] : '/';
-    useEffect(() => {
-    if (userInfo) {
-      dispatch({
-        type: 'SET_NOTIFICATION',
-        payload: {
-          type: 'success',
-          message: 'Đăng nhập thành công',
-        },
-      });
-      navigate(redirect);
-    }
-  }, [navigate, userInfo, redirect, dispatch]);
-  
-  // Tách useEffect xử lý lỗi ra riêng để tránh navigate khi có lỗi
-  useEffect(() => {
-    if (error) {
-      dispatch({
-        type: 'SET_NOTIFICATION',
-        payload: {
-          type: 'error',
-          message: error,
-        },
-      });
-    }
-  }, [error, dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    dispatch(login(identifier, password));
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Đăng nhập tài khoản
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Hoặc{' '}
-            <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className="font-medium text-blue-600 hover:text-blue-500">
-              đăng ký tài khoản mới
-            </Link>
-          </p>
-        </div>
-          {error && (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded" role="alert">
-            <p className="font-medium">Lỗi đăng nhập</p>
-            <p>{error}</p>
+    <div className="w-full md:w-1/2 bg-[#232b4a] p-8 flex flex-col justify-center relative animate-slideInRight">
+      <button className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-[#232b4a] hover:bg-[#FFB85C]/20 text-gray-400 hover:text-[#FFB85C] transition-colors text-xl shadow z-10">
+        ×
+      </button>
+
+      <div className="flex mb-6 border-b border-[#232b4a]">
+        <button 
+          className={`flex-1 py-3 text-lg font-semibold transition-all ${
+            activeTab === 'login' 
+              ? 'border-b-2 border-[#FFB85C] text-[#FFB85C]' 
+              : 'text-gray-300 hover:text-[#FFB85C]/80'
+          } bg-[#232b4a]`}
+          onClick={() => setActiveTab('login')}
+        >
+          Đăng nhập
+        </button>
+        <button 
+          className={`flex-1 py-3 text-lg font-semibold transition-all ${
+            activeTab === 'register'
+              ? 'border-b-2 border-[#FFB85C] text-[#FFB85C]'
+              : 'text-gray-300 hover:text-[#FFB85C]/80'
+          } bg-transparent`}
+          onClick={() => navigate('/register')}
+        >
+          Đăng ký
+        </button>
+      </div>
+
+      <div>
+        {error && (
+          <div className="mb-4 text-red-400 text-sm">
+            {error}
           </div>
         )}
-        
-        <form className="mt-8 space-y-6" onSubmit={submitHandler}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">Email</label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="relative">
-              <label htmlFor="password" className="sr-only">Mật khẩu</label>
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Mật khẩu"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button 
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash className="text-gray-500" /> : <FaEye className="text-gray-500" />}
-              </button>
-            </div>
-          </div>          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Nhớ đăng nhập
-              </label>
-            </div>
-            <div className="text-sm">
-              <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
-                Quên mật khẩu?
-              </Link>
-            </div>
 
-            <div className="text-sm">
-              <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
-                Quên mật khẩu?
-              </Link>
-            </div>
+        <form onSubmit={submitHandler}>
+          <div className="mb-4">
+            <label className="block mb-1 text-gray-300 font-semibold">
+              Email
+            </label>
+            <input
+              type="text"
+              required
+              className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
+              placeholder="Nhập email..."
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+            />
           </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${loading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+          <div className="mb-4 relative">
+            <label className="block mb-1 text-gray-300 font-semibold">
+              Mật khẩu
+            </label>
+            <input
+              type={showPassword ? "text" : "password"}
+              required
+              className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white pr-10 placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
+              placeholder="Nhập mật khẩu..."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span 
+              className="absolute right-3 top-9 cursor-pointer text-gray-400 hover:text-[#FFB85C]"
+              onClick={() => setShowPassword(!showPassword)}
             >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <FaSignInAlt className="h-5 w-5 text-blue-500 group-hover:text-blue-400" />
-              </span>
-              {loading ? 'Đang xử lý...' : 'Đăng nhập'}
-            </button>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
+
+          <div className="mb-4 text-right">
+            <Link to="/forgot-password" className="text-sm text-[#FFB85C] hover:text-yellow-500 font-semibold cursor-pointer">
+              Quên mật khẩu?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 text-[#151c32] py-2 rounded-lg hover:from-yellow-500 hover:to-orange-500 font-extrabold text-lg shadow-lg transition-all"
+          >
+            {loading ? 'Đang xử lý...' : 'Đăng nhập'}
+          </button>
+
+          <div className="mt-4 text-center text-xs text-gray-400">
+            Bằng cách đăng nhập, bạn đồng ý với{' '}
+            <span className="text-[#FFB85C] cursor-pointer font-semibold">
+              Điều khoản dịch vụ
+            </span>{' '}
+            và{' '}
+            <span className="text-[#FFB85C] cursor-pointer font-semibold">
+              Chính sách bảo mật
+            </span>{' '}
+            của chúng tôi.
           </div>
         </form>
       </div>
