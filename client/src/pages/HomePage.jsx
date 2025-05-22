@@ -8,6 +8,7 @@ import PropertyCard from '../components/home/PropertyCard';
 import BlogCard from '../components/home/BlogCard';
 import PromotionCard from '../components/home/PromotionCard';
 import LocationCard from '../components/home/LocationCard';
+import DestinationGrid from '../components/home/DestinationGrid';
 
 // Sample data (will be replaced with API calls later)
 import { featuredProperties, popularLocations, latestBlogs, currentPromotions } from '../data/sampleData';
@@ -30,80 +31,86 @@ const HomePage = () => {
     ? featuredProperties 
     : featuredProperties.filter(property => property.property_type === activeTab);
   return (
-    <>      {/* Hero Section */}
-      <section className="relative">
+    <>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
         <div 
-          className="h-[500px] bg-cover bg-center bg-no-repeat"
+          className="h-[500px] bg-cover bg-center bg-no-repeat animate-heroBg"
           style={{ 
             backgroundImage: "url('https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=1949&auto=format&fit=crop&ixlib=rb-4.0.3')",
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
-        >          <div className="absolute inset-0 bg-black bg-opacity-40 z-0"></div>
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900/60 via-blue-700/40 to-yellow-200/20 z-0 animate-gradientMove"></div>
           <div className="container mx-auto px-4 py-12 flex flex-col justify-center h-full relative z-10">
-            <h1 className="text-white text-3xl md:text-5xl font-bold mb-4 max-w-2xl">
+            <h1 className="text-white text-3xl md:text-5xl font-bold mb-4 max-w-2xl animate-fadeInUp">
               Khám phá & đặt phòng khách sạn, homestay tuyệt vời nhất
             </h1>
-            <p className="text-white/90 text-lg mb-8 max-w-2xl">
+            <p className="text-white/90 text-lg mb-8 max-w-2xl animate-fadeInUp delay-100">
               Tìm kiếm các địa điểm lưu trú tốt nhất, đánh giá chân thực và đặt phòng thuận tiện
             </p>
           </div>
         </div>
-        
         {/* Search Box */}
-        <SearchForm />
+        <div className="animate-fadeInUp delay-200">
+          <SearchForm />
+        </div>
       </section>
       
       {/* Property Types */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8 text-center">Khám Phá Theo Loại Hình Lưu Trú</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center relative inline-block after:content-[''] after:block after:w-16 after:h-1 after:bg-gradient-to-r after:from-blue-400 after:to-yellow-400 after:mx-auto after:mt-2">
+            Khám Phá Theo Loại Hình Lưu Trú
+          </h2>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <Link to="/search?type=hotel" className="bg-white rounded-lg p-4 text-center shadow hover:shadow-md transition-all duration-300 flex flex-col items-center">
-              <div className="bg-blue-100 p-4 rounded-full mb-3">
+            <Link to="/search?type=hotel" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-blue-400 transition-all duration-300 flex flex-col items-center group">
+              <div className="bg-blue-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
                 <FaHotel className="text-blue-600 text-2xl" />
               </div>
-              <span className="font-medium">Khách sạn</span>
+              <span className="font-medium text-base">Khách sạn</span>
             </Link>
             
-            <Link to="/search?type=homestay" className="bg-white rounded-lg p-4 text-center shadow hover:shadow-md transition-all duration-300 flex flex-col items-center">
-              <div className="bg-green-100 p-4 rounded-full mb-3">
+            <Link to="/search?type=homestay" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-green-400 transition-all duration-300 flex flex-col items-center group">
+              <div className="bg-green-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
                 <FaHome className="text-green-600 text-2xl" />
               </div>
-              <span className="font-medium">Homestay</span>
+              <span className="font-medium text-base">Homestay</span>
             </Link>
             
-            <Link to="/search?type=resort" className="bg-white rounded-lg p-4 text-center shadow hover:shadow-md transition-all duration-300 flex flex-col items-center">
-              <div className="bg-yellow-100 p-4 rounded-full mb-3">
+            <Link to="/search?type=resort" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-yellow-400 transition-all duration-300 flex flex-col items-center group">
+              <div className="bg-yellow-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
                 <FaUmbrellaBeach className="text-yellow-600 text-2xl" />
               </div>
-              <span className="font-medium">Resort</span>
+              <span className="font-medium text-base">Resort</span>
             </Link>
             
-            <Link to="/search?type=villa" className="bg-white rounded-lg p-4 text-center shadow hover:shadow-md transition-all duration-300 flex flex-col items-center">
-              <div className="bg-purple-100 p-4 rounded-full mb-3">
+            <Link to="/search?type=villa" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-purple-400 transition-all duration-300 flex flex-col items-center group">
+              <div className="bg-purple-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
                 <FaWarehouse className="text-purple-600 text-2xl" />
               </div>
-              <span className="font-medium">Villa</span>
+              <span className="font-medium text-base">Villa</span>
             </Link>
             
-            <Link to="/search?type=apartment" className="bg-white rounded-lg p-4 text-center shadow hover:shadow-md transition-all duration-300 flex flex-col items-center">
-              <div className="bg-red-100 p-4 rounded-full mb-3">
+            <Link to="/search?type=apartment" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-red-400 transition-all duration-300 flex flex-col items-center group">
+              <div className="bg-red-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
                 <FaBuilding className="text-red-600 text-2xl" />
               </div>
-              <span className="font-medium">Căn hộ</span>
+              <span className="font-medium text-base">Căn hộ</span>
             </Link>
             
-            <Link to="/search?amenities=pool" className="bg-white rounded-lg p-4 text-center shadow hover:shadow-md transition-all duration-300 flex flex-col items-center">
-              <div className="bg-teal-100 p-4 rounded-full mb-3">
+            <Link to="/search?amenities=pool" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-teal-400 transition-all duration-300 flex flex-col items-center group">
+              <div className="bg-teal-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
                 <FaSwimmingPool className="text-teal-600 text-2xl" />
               </div>
-              <span className="font-medium">Hồ bơi</span>
+              <span className="font-medium text-base">Hồ bơi</span>
             </Link>
           </div>
         </div>
       </section>
+      <DestinationGrid />
       
       {/* Popular Destinations */}
       <section className="py-12">
@@ -299,6 +306,16 @@ const HomePage = () => {
             </div>          </div>
         </div>
       </section>
+      <style>{`
+        .animate-fadeInUp { animation: fadeInUp .7s cubic-bezier(.4,2,.6,1) both; }
+        .animate-heroBg { animation: heroBg 12s ease-in-out infinite alternate; }
+        .animate-gradientMove { animation: gradientMove 10s linear infinite alternate; }
+        .animate-bounce-slow { animation: bounce 1.5s infinite; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+        @keyframes heroBg { 0% { filter: brightness(1); } 100% { filter: brightness(1.08) saturate(1.1); } }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+      `}</style>
     </>
   );
 };

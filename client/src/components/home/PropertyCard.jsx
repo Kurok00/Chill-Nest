@@ -31,19 +31,24 @@ const PropertyCard = ({ property, isFavorite, onToggleFavorite }) => {
   const locationString = location?.address ? 
     `${location.address.city || ''}, ${location.address.province || ''}` : '';
   
+  const detailUrl = property.property_type === 'homestay'
+    ? `/homestays/${property._id}`
+    : `/hotels/${property._id}`;
+  
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <Link to={detailUrl} className="block group hover:shadow-2xl transition-all duration-200 rounded-xl overflow-hidden bg-white border border-gray-100">
       {/* Image with favorite button */}
       <div className="relative">
-        <Link to={`/properties/${_id}`}>
-          <img 
-            src={mainImage?.url} 
-            alt={mainImage?.caption || name} 
-            className="w-full h-48 object-cover"
-          />
-        </Link>
+        <img 
+          src={mainImage?.url} 
+          alt={mainImage?.caption || name} 
+          className="w-full h-48 object-cover"
+        />
         <button 
-          onClick={() => onToggleFavorite(_id)}
+          onClick={(e) => {
+            e.preventDefault();
+            onToggleFavorite(_id);
+          }}
           className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md focus:outline-none"
         >
           {isFavorite ? (
@@ -67,11 +72,9 @@ const PropertyCard = ({ property, isFavorite, onToggleFavorite }) => {
       
       {/* Content */}
       <div className="p-4">
-        <Link to={`/properties/${_id}`}>
-          <h3 className="text-lg font-semibold text-gray-800 mb-1 hover:text-blue-600 truncate">
-            {name}
-          </h3>
-        </Link>
+        <h3 className="text-lg font-semibold text-gray-800 mb-1 hover:text-blue-600 truncate">
+          {name}
+        </h3>
         
         {/* Location */}
         {locationString && (
@@ -117,14 +120,14 @@ const PropertyCard = ({ property, isFavorite, onToggleFavorite }) => {
             <p className="text-gray-500 text-sm">Giá mỗi đêm</p>
           </div>
           <Link 
-            to={`/properties/${_id}`}
+            to={detailUrl}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
             Xem chi tiết
           </Link>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

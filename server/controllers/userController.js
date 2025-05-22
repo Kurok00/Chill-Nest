@@ -25,9 +25,15 @@ const transporter = nodemailer.createTransport({
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { identifier, password } = req.body;
 
-  const user = await User.findOne({ email });
+  // Tìm user theo email hoặc số điện thoại
+  const user = await User.findOne({
+    $or: [
+      { email: identifier },
+      { phone_number: identifier }
+    ]
+  });
 
   if (user && (await user.matchPassword(password))) {
     // Create response with user info
@@ -42,7 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error('Email hoặc mật khẩu không đúng');
+    throw new Error('Email/Số điện thoại hoặc mật khẩu không đúng');
   }
 });
 

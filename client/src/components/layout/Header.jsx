@@ -312,8 +312,10 @@ const Header = () => {
                   <form onSubmit={async e => {
                     e.preventDefault();
                     setLoginError('');
-                    if (!loginEmail.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
-                      setLoginError('Email không hợp lệ!');
+                    const isEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(loginEmail);
+                    const isPhone = /^\d{8,15}$/.test(loginEmail);
+                    if (!isEmail && !isPhone) {
+                      setLoginError('Vui lòng nhập email hợp lệ hoặc số điện thoại (8-15 số)!');
                       return;
                     }
                     if (loginPassword.length < 6) {
@@ -355,8 +357,8 @@ const Header = () => {
                       </div>
                     )}
                     <div className="mb-4">
-                      <label className="block mb-1 text-gray-300 font-semibold">Email</label>
-                      <input type="email" value={loginEmail} onChange={e=>setLoginEmail(e.target.value)} required className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none" placeholder="Nhập email..." />
+                      <label className="block mb-1 text-gray-300 font-semibold">Email hoặc số điện thoại</label>
+                      <input type="text" value={loginEmail} onChange={e=>setLoginEmail(e.target.value)} required className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none" placeholder="Nhập email hoặc số điện thoại..." />
                     </div>
                     <div className="mb-4 relative">
                       <label className="block mb-1 text-gray-300 font-semibold">Mật khẩu</label>

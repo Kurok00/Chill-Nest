@@ -2,16 +2,16 @@
 import axios from 'axios';
 
 // Đăng nhập
-export const login = (email, password) => async (dispatch) => {
+export const login = (identifier, password) => async (dispatch) => {
   try {
     dispatch({ type: 'USER_LOGIN_REQUEST' });
-    const { data } = await axios.post('/api/users/login', { email, password });
+    const { data } = await axios.post('/api/users/login', { identifier, password });
     dispatch({ type: 'USER_LOGIN_SUCCESS', payload: data });
     localStorage.setItem('userInfo', JSON.stringify(data));
     return data; // Return data for successful login
   } catch (error) {
     localStorage.removeItem('userInfo'); // Xóa userInfo nếu login fail
-    const errorMessage = error.response?.data?.message || 'Sai email hoặc mật khẩu';
+    const errorMessage = error.response?.data?.message || 'Sai thông tin đăng nhập';
     dispatch({
       type: 'USER_LOGIN_FAIL',
       payload: errorMessage,
