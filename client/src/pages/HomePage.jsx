@@ -65,47 +65,34 @@ const HomePage = () => {
             Khám Phá Theo Loại Hình Lưu Trú
           </h2>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <Link to="/search?type=hotel" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-blue-400 transition-all duration-300 flex flex-col items-center group">
-              <div className="bg-blue-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
-                <FaHotel className="text-blue-600 text-2xl" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-2">
+            <Link to="/search?type=hotel" className="bg-white rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-blue-400 transition-all duration-300 group">
+              <div className="bg-blue-100 p-6 rounded-full mb-4 flex items-center justify-center">
+                <FaHotel className="text-blue-600 text-4xl" />
               </div>
-              <span className="font-medium text-base">Khách sạn</span>
+              <span className="font-semibold text-lg mb-1">Khách sạn</span>
+              <span className="text-gray-500 text-sm">Tiện nghi, chuyên nghiệp</span>
             </Link>
-            
-            <Link to="/search?type=homestay" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-green-400 transition-all duration-300 flex flex-col items-center group">
-              <div className="bg-green-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
-                <FaHome className="text-green-600 text-2xl" />
+            <Link to="/search?type=homestay" className="bg-white rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-green-400 transition-all duration-300 group">
+              <div className="bg-green-100 p-6 rounded-full mb-4 flex items-center justify-center">
+                <FaHome className="text-green-600 text-4xl" />
               </div>
-              <span className="font-medium text-base">Homestay</span>
+              <span className="font-semibold text-lg mb-1">Homestay</span>
+              <span className="text-gray-500 text-sm">Ấm cúng, gần gũi</span>
             </Link>
-            
-            <Link to="/search?type=resort" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-yellow-400 transition-all duration-300 flex flex-col items-center group">
-              <div className="bg-yellow-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
-                <FaUmbrellaBeach className="text-yellow-600 text-2xl" />
+            <Link to="/search?type=resort" className="bg-white rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-yellow-400 transition-all duration-300 group">
+              <div className="bg-yellow-100 p-6 rounded-full mb-4 flex items-center justify-center">
+                <FaUmbrellaBeach className="text-yellow-600 text-4xl" />
               </div>
-              <span className="font-medium text-base">Resort</span>
+              <span className="font-semibold text-lg mb-1">Resort</span>
+              <span className="text-gray-500 text-sm">Nghỉ dưỡng cao cấp</span>
             </Link>
-            
-            <Link to="/search?type=villa" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-purple-400 transition-all duration-300 flex flex-col items-center group">
-              <div className="bg-purple-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
-                <FaWarehouse className="text-purple-600 text-2xl" />
+            <Link to="/search?type=apartment" className="bg-white rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-red-400 transition-all duration-300 group">
+              <div className="bg-red-100 p-6 rounded-full mb-4 flex items-center justify-center">
+                <FaBuilding className="text-red-600 text-4xl" />
               </div>
-              <span className="font-medium text-base">Villa</span>
-            </Link>
-            
-            <Link to="/search?type=apartment" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-red-400 transition-all duration-300 flex flex-col items-center group">
-              <div className="bg-red-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
-                <FaBuilding className="text-red-600 text-2xl" />
-              </div>
-              <span className="font-medium text-base">Căn hộ</span>
-            </Link>
-            
-            <Link to="/search?amenities=pool" className="bg-white rounded-2xl p-4 text-center shadow hover:shadow-xl hover:scale-105 border border-transparent hover:border-teal-400 transition-all duration-300 flex flex-col items-center group">
-              <div className="bg-teal-100 p-4 rounded-full mb-3 group-hover:animate-bounce-slow">
-                <FaSwimmingPool className="text-teal-600 text-2xl" />
-              </div>
-              <span className="font-medium text-base">Hồ bơi</span>
+              <span className="font-semibold text-lg mb-1">Căn hộ</span>
+              <span className="text-gray-500 text-sm">Không gian hiện đại</span>
             </Link>
           </div>
         </div>
