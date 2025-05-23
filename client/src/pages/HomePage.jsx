@@ -33,11 +33,11 @@ const HomePage = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative">
         <div 
           className="h-[500px] bg-cover bg-center bg-no-repeat animate-heroBg"
-          style={{ 
-            backgroundImage: "url('https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=1949&auto=format&fit=crop&ixlib=rb-4.0.3')",
+          style={{  
+            backgroundImage: "url('https://cdn1.ivivu.com/iVivu/2025/02/25/14/project-dt-2.jpg')",
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
@@ -50,16 +50,16 @@ const HomePage = () => {
             <p className="text-white/90 text-lg mb-8 max-w-2xl animate-fadeInUp delay-100">
               Tìm kiếm các địa điểm lưu trú tốt nhất, đánh giá chân thực và đặt phòng thuận tiện
             </p>
+            {/* SearchForm đặt ngay trong hero, căn giữa, margin-top hợp lý */}
+            <div className="flex justify-center mt-8 animate-fadeInUp delay-200">
+              <SearchForm />
+            </div>
           </div>
-        </div>
-        {/* Search Box */}
-        <div className="animate-fadeInUp delay-200">
-          <SearchForm />
         </div>
       </section>
       
       {/* Property Types */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-12 bg-gray-50 mt-16">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold mb-8 text-center relative inline-block after:content-[''] after:block after:w-16 after:h-1 after:bg-gradient-to-r after:from-blue-400 after:to-yellow-400 after:mx-auto after:mt-2">
             Khám Phá Theo Loại Hình Lưu Trú
@@ -100,7 +100,7 @@ const HomePage = () => {
       <DestinationGrid />
       
       {/* Popular Destinations */}
-      <section className="py-12">
+      <section className="py-12 mt-16">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold">Điểm Đến Phổ Biến</h2>
@@ -118,7 +118,7 @@ const HomePage = () => {
       </section>
       
       {/* Featured Properties */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-12 bg-gray-50 mt-16">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Chỗ Nghỉ Nổi Bật</h2>
@@ -181,7 +181,7 @@ const HomePage = () => {
       </section>
       
       {/* Current Promotions */}
-      <section className="py-12">
+      <section className="py-12 mt-16">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold">Ưu Đãi & Khuyến Mãi Đặc Biệt</h2>
@@ -199,7 +199,7 @@ const HomePage = () => {
       </section>
       
       {/* Travel Blog */}
-      <section className="py-12 bg-gray-50">
+      <section className="py-12 bg-gray-50 mt-16">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold">Blog Du Lịch</h2>
@@ -217,7 +217,7 @@ const HomePage = () => {
       </section>
       
       {/* App Download */}
-      <section className="py-12 bg-gradient-to-r from-blue-600 to-purple-600">
+      <section className="py-12 bg-gradient-to-r from-blue-600 to-purple-600 mt-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="md:w-1/2 mb-8 md:mb-0">
@@ -247,7 +247,7 @@ const HomePage = () => {
       </section>
       
       {/* Why Choose Us */}
-      <section className="py-12">
+      <section className="py-12 mt-16">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl font-bold mb-8 text-center">Tại Sao Chọn ChillNest?</h2>
           
