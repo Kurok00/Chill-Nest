@@ -119,12 +119,9 @@ const PropertyCard = ({ property, isFavorite, onToggleFavorite }) => {
             </p>
             <p className="text-gray-500 text-sm">Giá mỗi đêm</p>
           </div>
-          <Link 
-            to={detailUrl}
-            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-          >
+          <span className="text-blue-600 hover:text-blue-800 text-sm font-medium underline cursor-pointer">
             Xem chi tiết
-          </Link>
+          </span>
         </div>
       </div>
     </Link>

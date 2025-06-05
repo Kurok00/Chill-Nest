@@ -150,6 +150,12 @@ const Header = () => {
                 onClick={() => {
                   setShowAuthModal(true);
                   setAuthTab('register');
+                  setRegisterName('');
+                  setRegisterEmail('');
+                  setRegisterPassword('');
+                  setRegisterConfirmPassword('');
+                  setRegisterPhone('');
+                  setRegisterError('');
                 }}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
               >
@@ -231,6 +237,12 @@ const Header = () => {
                     setShowAuthModal(true);
                     setAuthTab('register');
                     setIsMenuOpen(false);
+                    setRegisterName('');
+                    setRegisterEmail('');
+                    setRegisterPassword('');
+                    setRegisterConfirmPassword('');
+                    setRegisterPhone('');
+                    setRegisterError('');
                   }}
                   className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
                 >
@@ -246,11 +258,20 @@ const Header = () => {
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 animate-fadeIn"
           onClick={e => {
             if (e.target === e.currentTarget) {
-              setModalClosing(true);
-              setTimeout(() => {
-                setShowAuthModal(false);
-                setModalClosing(false);
-              }, 250); // Giảm thời gian đóng modal
+              setModalClosing(true);                setTimeout(() => {
+                  setShowAuthModal(false);
+                  setModalClosing(false);
+                  // Reset tất cả các trường form
+                  setLoginEmail('');
+                  setLoginPassword('');
+                  setLoginError('');
+                  setRegisterName('');
+                  setRegisterEmail('');
+                  setRegisterPassword('');
+                  setRegisterConfirmPassword('');
+                  setRegisterPhone('');
+                  setRegisterError('');
+                }, 250); // Giảm thời gian đóng modal
             }
           }}
         >
@@ -284,32 +305,46 @@ const Header = () => {
                 setTimeout(() => {
                   setShowAuthModal(false);
                   setModalClosing(false);
-                }, 250);
-              }} className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-[#232b4a] hover:bg-[#FFB85C]/20 text-gray-400 hover:text-[#FFB85C] transition-colors text-xl shadow z-10">×</button>
-              <div className="flex mb-6 border-b border-[#232b4a]">
-                <button className={`flex-1 py-3 text-lg font-semibold transition-all ${authTab==='login' ? 'border-b-2 border-[#FFB85C] text-[#FFB85C] bg-[#232b4a]' : 'text-gray-300 bg-transparent hover:text-[#FFB85C]/80'}`} onClick={()=>{
-                  setAuthTab('login');
+                  // Reset tất cả các trường form
                   setLoginEmail('');
                   setLoginPassword('');
                   setLoginError('');
-                }}>
-                  Đăng nhập
-                </button>
-                <button className={`flex-1 py-3 text-lg font-semibold transition-all ${authTab==='register' ? 'border-b-2 border-[#FFB85C] text-[#FFB85C] bg-[#232b4a]' : 'text-gray-300 bg-transparent hover:text-[#FFB85C]/80'}`} onClick={()=>{
-                  setAuthTab('register');
                   setRegisterName('');
                   setRegisterEmail('');
                   setRegisterPassword('');
                   setRegisterConfirmPassword('');
                   setRegisterPhone('');
                   setRegisterError('');
+                }, 250);
+              }} className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-[#232b4a] hover:bg-[#FFB85C]/20 text-gray-400 hover:text-[#FFB85C] transition-colors text-xl shadow z-10">×</button>
+              <div className="flex mb-6 border-b border-[#232b4a]">
+                <button className={`flex-1 py-3 text-lg font-semibold transition-all ${authTab==='login' ? 'border-b-2 border-[#FFB85C] text-[#FFB85C] bg-[#232b4a]' : 'text-gray-300 bg-transparent hover:text-[#FFB85C]/80'}`} onClick={()=>{
+                  setAuthTab('login');
+                  // Đặt lại tất cả các trường đăng nhập và đăng ký để đảm bảo không giữ lại dữ liệu 
+                  setLoginEmail('');
+                  setLoginPassword('');
+                  setLoginError('');
+                  setLoginShowPassword(false);
+                }}>
+                  Đăng nhập
+                </button>
+                <button className={`flex-1 py-3 text-lg font-semibold transition-all ${authTab==='register' ? 'border-b-2 border-[#FFB85C] text-[#FFB85C] bg-[#232b4a]' : 'text-gray-300 bg-transparent hover:text-[#FFB85C]/80'}`} onClick={()=>{
+                  setAuthTab('register');
+                  // Đặt lại tất cả các trường đăng nhập và đăng ký để đảm bảo không giữ lại dữ liệu
+                  setRegisterName('');
+                  setRegisterEmail('');
+                  setRegisterPassword('');
+                  setRegisterConfirmPassword('');
+                  setRegisterPhone('');
+                  setRegisterError('');
+                  setRegisterShowPassword(false);
                 }}>
                   Đăng ký
                 </button>
               </div>
               <div>
                 {authTab==='login' ? (
-                  <form onSubmit={async e => {
+                  <form autoComplete="off" onSubmit={async e => {
                     e.preventDefault();
                     setLoginError('');
                     const isEmail = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(loginEmail);
@@ -358,11 +393,27 @@ const Header = () => {
                     )}
                     <div className="mb-4">
                       <label className="block mb-1 text-gray-300 font-semibold">Email hoặc số điện thoại</label>
-                      <input type="text" value={loginEmail} onChange={e=>setLoginEmail(e.target.value)} required className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none" placeholder="Nhập email hoặc số điện thoại..." />
+                      <input 
+                        type="text" 
+                        value={loginEmail} 
+                        onChange={e=>setLoginEmail(e.target.value)} 
+                        required 
+                        autoComplete="off" 
+                        className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none" 
+                        placeholder="Nhập email hoặc số điện thoại..." 
+                      />
                     </div>
                     <div className="mb-4 relative">
                       <label className="block mb-1 text-gray-300 font-semibold">Mật khẩu</label>
-                      <input type={loginShowPassword ? 'text' : 'password'} value={loginPassword} onChange={e=>setLoginPassword(e.target.value)} required className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white pr-10 placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none" placeholder="Nhập mật khẩu..." />
+                      <input 
+                        type={loginShowPassword ? 'text' : 'password'} 
+                        value={loginPassword} 
+                        onChange={e=>setLoginPassword(e.target.value)} 
+                        required 
+                        autoComplete="new-password" 
+                        className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white pr-10 placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none" 
+                        placeholder="Nhập mật khẩu..." 
+                      />
                       <span className="absolute right-3 top-9 cursor-pointer text-gray-400 hover:text-[#FFB85C]" onClick={()=>setLoginShowPassword(v=>!v)}>
                         {loginShowPassword ? <FaEyeSlash /> : <FaEye />}
                       </span>
@@ -386,7 +437,7 @@ const Header = () => {
                     </div>
                   </form>
                 ) : (
-                  <form onSubmit={async e => {
+                  <form autoComplete="off" onSubmit={async e => {
                     e.preventDefault();
                     setRegisterError('');
                     if (!registerName.trim()) {
@@ -475,6 +526,7 @@ const Header = () => {
                           }
                         }}
                         required
+                        autoComplete="off"
                         className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
                         placeholder="Nhập tên..."
                       />
@@ -502,20 +554,37 @@ const Header = () => {
                           }
                         }}
                         required
+                        autoComplete="off"
                         className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
                         placeholder="Nhập email..."
                       />
                     </div>
                     <div className="mb-4 relative">
                       <label className="block mb-1 text-gray-300 font-semibold">Mật khẩu</label>
-                      <input type={registerShowPassword ? 'text' : 'password'} value={registerPassword} onChange={e=>setRegisterPassword(e.target.value)} required className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white pr-10 placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none" placeholder="Nhập mật khẩu..." />
+                      <input 
+                        type={registerShowPassword ? 'text' : 'password'} 
+                        value={registerPassword} 
+                        onChange={e=>setRegisterPassword(e.target.value)} 
+                        required 
+                        autoComplete="new-password"
+                        className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white pr-10 placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none" 
+                        placeholder="Nhập mật khẩu..." 
+                      />
                       <span className="absolute right-3 top-9 cursor-pointer text-gray-400 hover:text-[#FFB85C]" onClick={()=>setRegisterShowPassword(v=>!v)}>
                         {registerShowPassword ? <FaEyeSlash /> : <FaEye />}
                       </span>
                     </div>
                     <div className="mb-4 relative">
                       <label className="block mb-1 text-gray-300 font-semibold">Nhập lại mật khẩu</label>
-                      <input type={registerShowPassword ? 'text' : 'password'} value={registerConfirmPassword} onChange={e=>setRegisterConfirmPassword(e.target.value)} required className={`w-full px-3 py-2 border-2 ${registerConfirmPassword && registerPassword !== registerConfirmPassword ? 'border-red-500' : 'border-[#FFB85C]'} rounded-lg bg-[#232b4a] text-white pr-10 placeholder-yellow-200 focus:ring-2 focus:ring-${registerConfirmPassword && registerPassword !== registerConfirmPassword ? 'red-500' : '[#FFB85C]'} focus:border-${registerConfirmPassword && registerPassword !== registerConfirmPassword ? 'red-500' : 'yellow-400'} shadow-md transition-all outline-none`} placeholder="Nhập lại mật khẩu..." />
+                      <input 
+                        type={registerShowPassword ? 'text' : 'password'} 
+                        value={registerConfirmPassword} 
+                        onChange={e=>setRegisterConfirmPassword(e.target.value)} 
+                        required 
+                        autoComplete="new-password"
+                        className={`w-full px-3 py-2 border-2 ${registerConfirmPassword && registerPassword !== registerConfirmPassword ? 'border-red-500' : 'border-[#FFB85C]'} rounded-lg bg-[#232b4a] text-white pr-10 placeholder-yellow-200 focus:ring-2 focus:ring-${registerConfirmPassword && registerPassword !== registerConfirmPassword ? 'red-500' : '[#FFB85C]'} focus:border-${registerConfirmPassword && registerPassword !== registerConfirmPassword ? 'red-500' : 'yellow-400'} shadow-md transition-all outline-none`} 
+                        placeholder="Nhập lại mật khẩu..." 
+                      />
                       <span className="absolute right-3 top-9 cursor-pointer text-gray-400 hover:text-[#FFB85C]" onClick={()=>setRegisterShowPassword(v=>!v)}>
                         {registerShowPassword ? <FaEyeSlash /> : <FaEye />}
                       </span>
@@ -545,6 +614,7 @@ const Header = () => {
                             }
                           }
                         }}
+                        autoComplete="off"
                         className="w-full px-3 py-2 border-2 border-[#FFB85C] rounded-lg bg-[#232b4a] text-white placeholder-yellow-200 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
                         placeholder="Nhập số điện thoại..."
                       />

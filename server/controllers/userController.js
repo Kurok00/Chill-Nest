@@ -2,8 +2,9 @@ const User = require('../models/userModel');
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer'); // Không dùng nữa
 const crypto = require('crypto');
+const sendMail = require('../utils/sendMail');
 
 // Generate JWT token with 7-day expiration
 const generateToken = (id) => {
@@ -11,15 +12,6 @@ const generateToken = (id) => {
     expiresIn: '7d', // Make token valid for 7 days
   });
 };
-
-// Configure nodemailer for email sending
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -88,9 +80,8 @@ const registerUser = asyncHandler(async (req, res) => {
     await tempUser.save();
   }
 
-  // Gửi OTP qua email
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  // Gửi OTP qua email bằng Resend
+  await sendMail({
     to: email,
     subject: 'Mã xác thực đăng ký tài khoản',
     html: `
@@ -101,8 +92,7 @@ const registerUser = asyncHandler(async (req, res) => {
       <p>Mã này sẽ hết hạn sau 10 phút.</p>
       <p>Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này.</p>
     `
-  };
-  await transporter.sendMail(mailOptions);
+  });
 
   res.status(200).json({
     message: `Đã gửi mã OTP tới email ${email}. Vui lòng kiểm tra email và nhập mã OTP để xác nhận đăng ký.`,
@@ -132,9 +122,8 @@ const resendOtp = asyncHandler(async (req, res) => {
   tempUser.email_otp_expires = otpExpires;
   await tempUser.save();
 
-  // Send new OTP via email
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  // Gửi OTP mới qua email bằng Resend
+  await sendMail({
     to: email,
     subject: 'Mã xác thực mới cho tài khoản của bạn',
     html: `
@@ -145,8 +134,7 @@ const resendOtp = asyncHandler(async (req, res) => {
       <p>Mã này sẽ hết hạn sau 10 phút.</p>
       <p>Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này.</p>
     `
-  };
-  await transporter.sendMail(mailOptions);
+  });
 
   res.status(200).json({
     message: `Đã gửi mã OTP mới tới email ${email}. Vui lòng kiểm tra email và nhập mã OTP để xác nhận đăng ký.`,
@@ -325,8 +313,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
   let frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
   const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
   
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
+  await sendMail({
     to: user.email,
     subject: 'Khôi phục mật khẩu',
     html: `
@@ -335,10 +322,9 @@ const forgotPassword = asyncHandler(async (req, res) => {
       <a href="${resetUrl}" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Đặt lại mật khẩu</a>
       <p>Liên kết này sẽ hết hạn sau 1 giờ.</p>
       <p>Nếu bạn không thực hiện yêu cầu này, vui lòng bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.</p>
-    `
-  };
-  
-  await transporter.sendMail(mailOptions);
+    `,
+    from: 'ChillNest <anvnt96@gmail.com>' // Đảm bảo from hợp lệ với SendGrid
+  });
   
   res.status(200).json({ message: 'Email đặt lại mật khẩu đã được gửi' });
 });
@@ -476,6 +462,84 @@ const checkUniqueUserInfo = asyncHandler(async (req, res) => {
   res.json({ exists });
 });
 
+// @desc    Register a new admin user
+// @route   POST /api/users/admin/register
+// @access  Public
+const registerAdmin = asyncHandler(async (req, res) => {
+  const { user_name, email, password, phone_number, secretCode } = req.body;
+
+  // Check if secret code is correct
+  if (secretCode !== '961210') {
+    res.status(401);
+    throw new Error('Mã bí mật không chính xác');
+  }
+
+  // Check if user exists
+  const userExists = await User.findOne({ email });
+  if (userExists) {
+    res.status(400);
+    throw new Error('Người dùng đã tồn tại');
+  }
+
+  // Create user
+  const user = await User.create({
+    user_name,
+    email,
+    password, // Hashed automatically in the model
+    phone_number,
+    role: 'admin',
+    is_verified: true, // Admin users are auto-verified
+  });
+
+  if (user) {
+    // Return user info with token
+    res.status(201).json({
+      _id: user._id,
+      user_name: user.user_name,
+      email: user.email,
+      role: user.role,
+      profile_image: user.profile_image,
+      is_verified: user.is_verified,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(400);
+    throw new Error('Dữ liệu người dùng không hợp lệ');
+  }
+});
+
+// @desc    Auth admin user & get token
+// @route   POST /api/users/admin/login
+// @access  Public
+const loginAdmin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  // Tìm user theo email
+  const user = await User.findOne({ email });
+
+  if (user && (await user.matchPassword(password))) {
+    // Kiểm tra xem người dùng có phải là admin không
+    if (user.role !== 'admin') {
+      res.status(403);
+      throw new Error('Không có quyền truy cập trang quản trị');
+    }
+
+    // Create response with user info
+    res.json({
+      _id: user._id,
+      user_name: user.user_name,
+      email: user.email,
+      role: user.role,
+      profile_image: user.profile_image,
+      is_verified: user.is_verified,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(401);
+    throw new Error('Email hoặc mật khẩu không đúng');
+  }
+});
+
 module.exports = {
   loginUser,
   registerUser,
@@ -490,4 +554,6 @@ module.exports = {
   verifyEmailOtp,
   checkUniqueUserInfo,
   resendOtp,
+  registerAdmin,
+  loginAdmin,
 };

@@ -1,5 +1,10 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import {
+  adminLoginReducer,
+  adminRegisterReducer,
+  adminListReducer
+} from './reducers/adminReducers';
 
 // User Login Reducer
 const userLoginReducer = (state = {}, action) => {
@@ -140,6 +145,9 @@ const reducer = combineReducers({
   passwordChange: passwordChangeReducer,
   userProfile: userProfileReducer,
   notification: notificationReducer,
+  adminLogin: adminLoginReducer,
+  adminRegister: adminRegisterReducer,
+  adminList: adminListReducer,
   // Thêm các reducers khác ở đây
 });
 
@@ -148,8 +156,14 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
   : null;
 
+// Get admin info from localStorage if exists
+const adminInfoFromStorage = localStorage.getItem('adminInfo')
+  ? JSON.parse(localStorage.getItem('adminInfo'))
+  : null;
+
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
+  adminLogin: { adminInfo: adminInfoFromStorage },
 };
 
 const middleware = [thunk];

@@ -14,6 +14,8 @@ const {
   verifyEmailOtp,
   checkUniqueUserInfo,
   resendOtp, // Thêm controller mới
+  registerAdmin,
+  loginAdmin,
 } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -26,6 +28,10 @@ router.post('/resend-otp', resendOtp); // Thêm route mới cho resend OTP
 router.post('/forgotpassword', forgotPassword);
 router.post('/resetpassword/:token', resetPassword);
 router.post('/check-unique', checkUniqueUserInfo);
+
+// Admin routes
+router.post('/admin/register', registerAdmin);
+router.post('/admin/login', loginAdmin);
 
 // Protected routes
 router.get('/profile', protect, getUserProfile);
