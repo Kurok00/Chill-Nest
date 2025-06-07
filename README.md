@@ -75,6 +75,25 @@ cd client
 npm start
 ```
 
+## Cài đặt môi trường
+
+1. Copy file `.env.example` thành `.env`:
+```bash
+cd server
+cp .env.example .env
+```
+
+2. Cập nhật các giá trị trong file `.env`:
+   - Liên hệ admin để lấy các giá trị cấu hình cần thiết
+   - Đảm bảo không commit file `.env` lên git repository
+   - Giữ file `.env` an toàn và không chia sẻ với người khác
+
+3. Các biến môi trường quan trọng cần cấu hình:
+   - `MONGODB_URI`: URL kết nối MongoDB
+   - `JWT_SECRET`: Secret key cho JWT authentication
+   - `SENDGRID_API_KEY`: API key cho SendGrid email service
+   - `CLOUDINARY_*`: Cấu hình cho Cloudinary (nếu sử dụng)
+
 ## Người phát triển
 - Thông tin về nhóm phát triển dự án
 
