@@ -512,20 +512,30 @@ const registerAdmin = asyncHandler(async (req, res) => {
 // @route   POST /api/users/admin/login
 // @access  Public
 const loginAdmin = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  console.log('Backend - Login request body:', req.body);
+  const { user_name, password } = req.body;
 
-  // Tìm user theo email
-  const user = await User.findOne({ email });
+  // Tìm user theo user_name
+  const user = await User.findOne({ user_name });
+  console.log('Backend - Found user:', user ? {
+    _id: user._id,
+    user_name: user.user_name,
+    role: user.role,
+    password: user.password
+  } : null);
 
-  if (user && (await user.matchPassword(password))) {
+  // So sánh mật khẩu trực tiếp vì trong database đang là plain text
+  if (user && user.password === password) {
+    console.log('Backend - Password match successful');
     // Kiểm tra xem người dùng có phải là admin không
     if (user.role !== 'admin') {
+      console.log('Backend - User is not admin');
       res.status(403);
       throw new Error('Không có quyền truy cập trang quản trị');
     }
 
     // Create response with user info
-    res.json({
+    const response = {
       _id: user._id,
       user_name: user.user_name,
       email: user.email,
@@ -533,10 +543,13 @@ const loginAdmin = asyncHandler(async (req, res) => {
       profile_image: user.profile_image,
       is_verified: user.is_verified,
       token: generateToken(user._id),
-    });
+    };
+    console.log('Backend - Login successful, sending response:', response);
+    res.json(response);
   } else {
+    console.log('Backend - Login failed: Invalid credentials');
     res.status(401);
-    throw new Error('Email hoặc mật khẩu không đúng');
+    throw new Error('Tên đăng nhập hoặc mật khẩu không đúng');
   }
 });
 

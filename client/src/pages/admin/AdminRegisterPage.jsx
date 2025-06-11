@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { register } from '../../actions/adminActions';
-import { FaUserShield, FaEye, FaEyeSlash, FaEnvelope, FaLock, FaPhone, FaUser } from 'react-icons/fa';
+import { registerAdmin } from '../../actions/adminActions';
 
 const AdminRegisterPage = () => {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [secretCode, setSecretCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
@@ -37,11 +35,6 @@ const AdminRegisterPage = () => {
       return;
     }
 
-    if (!email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
-      setError('Email không hợp lệ');
-      return;
-    }
-
     if (password.length < 6) {
       setError('Mật khẩu phải có ít nhất 6 ký tự');
       return;
@@ -52,180 +45,163 @@ const AdminRegisterPage = () => {
       return;
     }
 
-    if (phoneNumber && !/^\d{8,15}$/.test(phoneNumber)) {
-      setError('Số điện thoại phải từ 8-15 số');
+    if (!secretCode) {
+      setError('Vui lòng nhập mã bí mật');
       return;
     }
 
     try {
-      dispatch(register({
-        name,
-        email,
-        password,
-        phoneNumber
-      }));
+      dispatch(registerAdmin(name, name, password, '', secretCode));
     } catch (err) {
       setError(err.response?.data?.message || 'Đăng ký thất bại');
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#151c32] flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-8 bg-[#1b2340] p-8 rounded-xl shadow-2xl border border-[#232b4a]">
-        <div className="text-center">
-          <FaUserShield className="mx-auto h-12 w-12 text-[#FFB85C]" />
-          <h2 className="mt-6 text-3xl font-extrabold bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 bg-clip-text text-transparent">
-            Đăng ký Quản trị viên
-          </h2>
-          <p className="mt-2 text-sm text-gray-400">
-            Hoặc{' '}
-            <Link to="/admin/login" className="font-medium text-yellow-400 hover:text-yellow-500 transition-colors">
-              đăng nhập nếu đã có tài khoản
-            </Link>
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">Chill-Nest Admin</h1>
+          <p className="text-gray-600 mt-2">Đăng ký tài khoản quản trị viên</p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {(error || registerError) && (
-            <div className="text-[#FFB85C] text-sm text-center bg-[#3a1c1c] py-2 px-4 rounded-lg border border-[#ff8c8c] animate-shake">
-              {error || registerError}
-            </div>
-          )}
+        {(error || registerError) && (
+          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+            <p>{error || registerError}</p>
+          </div>
+        )}
 
-          <div className="space-y-4">
-            {/* Name Input */}
-            <div className="relative">
-              <label className="ml-1 text-sm font-medium text-gray-300">
-                <FaUser className="absolute mt-3 ml-3 h-5 w-5 text-[#FFB85C]" />
-                <span className="ml-9">Tên hiển thị</span>
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="mt-1 block w-full pl-10 pr-3 py-2 bg-[#232b4a] border-2 border-[#FFB85C] rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
-                placeholder="Nhập tên hiển thị"
-              />
-            </div>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-6">
+            <label htmlFor="name" className="block text-gray-700 text-sm font-semibold mb-2">
+              Tên hiển thị
+            </label>
+            <input
+              type="text"
+              id="name"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Nhập tên hiển thị"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
 
-            {/* Email Input */}
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-gray-700 text-sm font-semibold mb-2">
+              Mật khẩu
+            </label>
             <div className="relative">
-              <label className="ml-1 text-sm font-medium text-gray-300">
-                <FaEnvelope className="absolute mt-3 ml-3 h-5 w-5 text-[#FFB85C]" />
-                <span className="ml-9">Email</span>
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="mt-1 block w-full pl-10 pr-3 py-2 bg-[#232b4a] border-2 border-[#FFB85C] rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
-                placeholder="admin@example.com"
-              />
-            </div>
-
-            {/* Password Input */}
-            <div className="relative">
-              <label className="ml-1 text-sm font-medium text-gray-300">
-                <FaLock className="absolute mt-3 ml-3 h-5 w-5 text-[#FFB85C]" />
-                <span className="ml-9">Mật khẩu</span>
-              </label>
               <input
                 type={showPassword ? 'text' : 'password'}
+                id="password"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="mt-1 block w-full pl-10 pr-10 py-2 bg-[#232b4a] border-2 border-[#FFB85C] rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
-                placeholder="••••••••"
                 minLength={6}
               />
               <button
                 type="button"
-                className="absolute right-3 top-9 text-gray-400 hover:text-[#FFB85C] transition-colors"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
+                    <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+                  </svg>
+                )}
               </button>
             </div>
+          </div>
 
-            {/* Confirm Password Input */}
+          <div className="mb-6">
+            <label htmlFor="confirmPassword" className="block text-gray-700 text-sm font-semibold mb-2">
+              Xác nhận mật khẩu
+            </label>
             <div className="relative">
-              <label className="ml-1 text-sm font-medium text-gray-300">
-                <FaLock className="absolute mt-3 ml-3 h-5 w-5 text-[#FFB85C]" />
-                <span className="ml-9">Xác nhận mật khẩu</span>
-              </label>
               <input
                 type={showPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                className={`w-full px-4 py-2 border ${password && confirmPassword && password !== confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                placeholder="••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className={`mt-1 block w-full pl-10 pr-10 py-2 bg-[#232b4a] border-2 ${password && confirmPassword && password !== confirmPassword ? 'border-red-500' : 'border-[#FFB85C]'} rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none`}
-                placeholder="••••••••"
               />
               <button
                 type="button"
-                className="absolute right-3 top-9 text-gray-400 hover:text-[#FFB85C] transition-colors"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                    <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
+                    <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+                  </svg>
+                )}
               </button>
-              {password && confirmPassword && password !== confirmPassword && (
-                <p className="mt-1 text-xs text-red-400">Mật khẩu không khớp</p>
-              )}
             </div>
+            {password && confirmPassword && password !== confirmPassword && (
+              <p className="mt-1 text-xs text-red-500">Mật khẩu không khớp</p>
+            )}
+          </div>
 
-            {/* Phone Number Input */}
-            <div className="relative">
-              <label className="ml-1 text-sm font-medium text-gray-300">
-                <FaPhone className="absolute mt-3 ml-3 h-5 w-5 text-[#FFB85C]" />
-                <span className="ml-9">Số điện thoại</span>
-              </label>
-              <input
-                type="tel"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
-                className="mt-1 block w-full pl-10 pr-3 py-2 bg-[#232b4a] border-2 border-[#FFB85C] rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-[#FFB85C] focus:border-yellow-400 shadow-md transition-all outline-none"
-                placeholder="Nhập số điện thoại"
-              />
-            </div>
+          <div className="mb-6">
+            <label htmlFor="secretCode" className="block text-gray-700 text-sm font-semibold mb-2">
+              Mã bí mật
+            </label>
+            <input
+              type="password"
+              id="secretCode"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Nhập mã bí mật"
+              value={secretCode}
+              onChange={(e) => setSecretCode(e.target.value)}
+              required
+            />
           </div>
 
           <button
             type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out"
             disabled={loading}
-            className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-sm font-bold text-[#151c32] bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 hover:from-yellow-500 hover:to-orange-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {loading ? 'Đang xử lý...' : 'Đăng ký'}
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Đang xử lý...
+              </span>
+            ) : (
+              'Đăng ký'
+            )}
           </button>
         </form>
 
-        <div className="text-center text-sm">
-          <p className="text-gray-400">
-            Bằng cách đăng ký, bạn đồng ý với{' '}
-            <Link to="#" className="text-yellow-400 hover:text-yellow-300 font-medium">
-              Điều khoản dịch vụ
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Đã có tài khoản?{' '}
+            <Link to="/admin" className="font-medium text-blue-600 hover:text-blue-500">
+              Đăng nhập
             </Link>
-            {' '}và{' '}
-            <Link to="#" className="text-yellow-400 hover:text-yellow-300 font-medium">
-              Chính sách bảo mật
-            </Link>
-            {' '}của chúng tôi
           </p>
         </div>
       </div>
-
-      <style>{`
-        @keyframes shake {
-          10%, 90% { transform: translateX(-1px); }
-          20%, 80% { transform: translateX(2px); }
-          30%, 50%, 70% { transform: translateX(-4px); }
-          40%, 60% { transform: translateX(4px); }
-        }
-        .animate-shake {
-          animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
-        }
-      `}</style>
     </div>
   );
 };

@@ -6,12 +6,17 @@ import {
   ADMIN_REGISTER_REQUEST,
   ADMIN_REGISTER_SUCCESS,
   ADMIN_REGISTER_FAIL,
+  ADMIN_GET_STATS_REQUEST,
+  ADMIN_GET_STATS_SUCCESS,
+  ADMIN_GET_STATS_FAIL,
 } from '../constants/adminConstants';
 import axios from 'axios';
 
 // Action đăng nhập admin
-export const loginAdmin = (email, password) => async (dispatch) => {
+export const loginAdmin = (username, password) => async (dispatch) => {
   try {
+    console.log('Frontend - Login attempt:', { username, password });
+    
     dispatch({
       type: ADMIN_LOGIN_REQUEST,
     });
@@ -22,11 +27,16 @@ export const loginAdmin = (email, password) => async (dispatch) => {
       },
     };
 
+    const requestBody = { user_name: username, password };
+    console.log('Frontend - Request body:', requestBody);
+
     const { data } = await axios.post(
-      '/api/users/admin/login',
-      { email, password },
+      'http://localhost:5000/api/users/admin/login',
+      requestBody,
       config
     );
+
+    console.log('Frontend - Login response:', data);
 
     // Kiểm tra vai trò người dùng
     if (data.role !== 'admin') {
@@ -40,6 +50,7 @@ export const loginAdmin = (email, password) => async (dispatch) => {
 
     localStorage.setItem('adminInfo', JSON.stringify(data));
   } catch (error) {
+    console.error('Frontend - Login error:', error.response?.data || error.message);
     dispatch({
       type: ADMIN_LOGIN_FAIL,
       payload:
@@ -57,11 +68,6 @@ export const registerAdmin = (user_name, email, password, phone_number, secretCo
       type: ADMIN_REGISTER_REQUEST,
     });
 
-    // Kiểm tra secret code
-    if (secretCode !== '961210') {
-      throw new Error('Mã bí mật không chính xác');
-    }
-
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -69,8 +75,8 @@ export const registerAdmin = (user_name, email, password, phone_number, secretCo
     };
 
     const { data } = await axios.post(
-      '/api/users/admin/register',
-      { user_name, email, password, phone_number, role: 'admin' },
+      'http://localhost:5000/api/users/admin/register',
+      { user_name, email, password, phone_number, secretCode, role: 'admin' },
       config
     );
 
@@ -101,4 +107,22 @@ export const registerAdmin = (user_name, email, password, phone_number, secretCo
 export const logoutAdmin = () => (dispatch) => {
   localStorage.removeItem('adminInfo');
   dispatch({ type: ADMIN_LOGOUT });
+};
+
+export const getAdminStats = (timeRange) => async (dispatch) => {
+  try {
+    dispatch({ type: ADMIN_GET_STATS_REQUEST });
+
+    const { data } = await axios.get(`/api/admin/stats?timeRange=${timeRange}`);
+
+    dispatch({
+      type: ADMIN_GET_STATS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_GET_STATS_FAIL,
+      payload: error.response?.data?.message || 'Có lỗi xảy ra khi lấy thống kê',
+    });
+  }
 };

@@ -1,50 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAdmin } from '../../actions/adminActions';
 
 const AdminLoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
-    // Truy cập trạng thái từ Redux store
+  // Truy cập trạng thái từ Redux store
   const adminLogin = useSelector((state) => state.adminLogin);
   const { loading, error, adminInfo } = adminLogin || {};
 
   useEffect(() => {
     // Nếu admin đã đăng nhập, chuyển hướng đến trang admin dashboard
     if (adminInfo) {
-      navigate('/admin/dashboard');
+      setIsLoading(true);
+      // Thêm delay để hiển thị animation loading
+      setTimeout(() => {
+        navigate('/admin/dashboard');
+      }, 1000);
     }
   }, [adminInfo, navigate]);
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Xóa trường nhập không cần thiết trước khi submit
-    const formElements = e.target.elements;
-    for (let element of formElements) {
-      if (element.name === 'username' || element.name === 'password') {
-        element.value = '';
-      }
-    }
-    
+    setIsLoading(true);
     // Gửi thông tin đăng nhập
-    dispatch(loginAdmin(email, password));
+    await dispatch(loginAdmin(username, password));
   };
   
   // Xử lý khi component mount để xóa dữ liệu tự điền
   useEffect(() => {
     // Đặt timeout để đảm bảo DOM đã load hoàn tất
     setTimeout(() => {
-      const emailInput = document.getElementById('admin-email');
+      const usernameInput = document.getElementById('admin-username');
       const passwordInput = document.getElementById('password');
       
-      if (emailInput && passwordInput) {
-        emailInput.value = '';
+      if (usernameInput && passwordInput) {
+        usernameInput.value = '';
         passwordInput.value = '';
-        setEmail('');
+        setUsername('');
         setPassword('');
       }
     }, 100);
@@ -62,7 +61,9 @@ const AdminLoginPage = () => {
           <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
             <p>{error}</p>
           </div>
-        )}        {/* Hidden inputs để ngăn chặn trình duyệt tự điền */}
+        )}
+
+        {/* Hidden inputs để ngăn chặn trình duyệt tự điền */}
         <div style={{ display: 'none' }}>
           <input type="text" name="username" />
           <input type="password" name="password" />
@@ -70,19 +71,20 @@ const AdminLoginPage = () => {
 
         <form onSubmit={handleSubmit} autoComplete="new-password">
           <div className="mb-6">
-            <label htmlFor="admin-email" className="block text-gray-700 text-sm font-semibold mb-2">
-              Email
+            <label htmlFor="admin-username" className="block text-gray-700 text-sm font-semibold mb-2">
+              Tên đăng nhập
             </label>
             <input
-              type="email"
-              id="admin-email"
+              type="text"
+              id="admin-username"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Email của bạn"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Nhập tên đăng nhập"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               autoComplete="new-password"
-              name="admin_email_no_autofill"
+              name="admin_username_no_autofill"
+              disabled={isLoading}
             />
           </div>
 
@@ -95,17 +97,20 @@ const AdminLoginPage = () => {
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Mật khẩu của bạn"
+                placeholder="Nhập mật khẩu"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required                autoComplete="new-password"
+                required
+                autoComplete="new-password"
                 name="admin_password_no_autofill"
                 data-lpignore="true"
+                disabled={isLoading}
               />
               <button
                 type="button"
                 className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm"
                 onClick={() => setShowPassword(!showPassword)}
+                disabled={isLoading}
               >
                 {showPassword ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
@@ -124,10 +129,12 @@ const AdminLoginPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out"
-            disabled={loading}
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out ${
+              isLoading ? 'opacity-75 cursor-not-allowed' : ''
+            }`}
+            disabled={isLoading}
           >
-            {loading ? (
+            {isLoading ? (
               <span className="flex items-center justify-center">
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -142,11 +149,29 @@ const AdminLoginPage = () => {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 mb-4">
             Liên hệ với quản trị viên nếu bạn cần trợ giúp.
           </p>
+          <Link 
+            to="/admin/register" 
+            className={`inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out ${
+              isLoading ? 'opacity-75 cursor-not-allowed pointer-events-none' : ''
+            }`}
+          >
+            Đăng ký tài khoản Admin
+          </Link>
         </div>
       </div>
+
+      {/* Loading overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-xl text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-700">Đang chuyển hướng...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

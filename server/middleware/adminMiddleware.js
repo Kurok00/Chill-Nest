@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
-const asyncHandler = require('express-async-handler');
 
-const protectAdmin = asyncHandler(async (req, res, next) => {
+const protectAdmin = async (req, res, next) => {
   let token;
 
   if (
@@ -10,34 +9,29 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     try {
+      // Get token from header
       token = req.headers.authorization.split(' ')[1];
+
+      // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Tìm người dùng và kiểm tra vai trò
-      const user = await User.findById(decoded.id).select('-password');
+      // Get admin from the token
+      req.admin = await User.findById(decoded.id).select('-password');
 
-      if (!user) {
-        res.status(401);
-        throw new Error('Không tìm thấy người dùng');
+      // Check if user is admin
+      if (req.admin.role !== 'admin') {
+        return res.status(403).json({ message: 'Không có quyền truy cập trang quản trị' });
       }
 
-      // Kiểm tra xem người dùng có phải là admin hay không
-      if (user.role !== 'admin') {
-        res.status(403);
-        throw new Error('Không có quyền truy cập trang quản trị');
-      }
-
-      req.user = user;
       next();
     } catch (error) {
-      console.error(error);
-      res.status(401);
-      throw new Error('Không được ủy quyền, token không hợp lệ');
+      res.status(401).json({ message: 'Không được phép truy cập' });
     }
   }
 
   if (!token) {
-    res.status(401);
-    throw new Error('Không được ủy quyền, không có token');
+    res.status(401).json({ message: 'Không được phép truy cập, không có token' });
   }
-});
+};
+
+module.exports = { protectAdmin };
