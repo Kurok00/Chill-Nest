@@ -16,8 +16,13 @@ const {
   resendOtp, // Thêm controller mới
   registerAdmin,
   loginAdmin,
+  getAllUsers,
+  getUserById,
+  updateUserById,
+  deleteUserById,
+  createUserByAdmin,
 } = require('../controllers/userController');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, admin } = require('../middleware/authMiddleware');
 
 // Public routes
 router.post('/login', loginUser);
@@ -39,5 +44,15 @@ router.put('/profile', protect, updateUserProfile);
 router.put('/changepassword', protect, changePassword);
 router.post('/verifyphone', protect, sendPhoneVerification);
 router.post('/verifyphone/confirm', protect, confirmPhoneVerification);
+
+// Admin user management routes
+router.route('/')
+  .get(protect, admin, getAllUsers) // Lấy danh sách user
+  .post(protect, admin, createUserByAdmin); // Tạo user mới từ admin
+
+router.route('/:id')
+  .get(protect, admin, getUserById) // Lấy 1 user
+  .put(protect, admin, updateUserById) // Cập nhật user
+  .delete(protect, admin, deleteUserById); // Xóa user
 
 module.exports = router;

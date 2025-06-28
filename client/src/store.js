@@ -3,7 +3,13 @@ import thunk from 'redux-thunk';
 import {
   adminLoginReducer,
   adminRegisterReducer,
-  adminListReducer
+  adminListReducer,
+  adminStatsReducer,
+  adminUserListReducer,
+  adminUserDetailsReducer,
+  adminUserUpdateReducer,
+  adminUserDeleteReducer,
+  adminUserCreateReducer
 } from './reducers/adminReducers';
 
 // User Login Reducer
@@ -148,6 +154,11 @@ const reducer = combineReducers({
   adminLogin: adminLoginReducer,
   adminRegister: adminRegisterReducer,
   adminList: adminListReducer,
+  adminStats: adminStatsReducer,  adminUserList: adminUserListReducer,
+  adminUserDetails: adminUserDetailsReducer,
+  adminUserUpdate: adminUserUpdateReducer,
+  adminUserDelete: adminUserDeleteReducer,
+  adminUserCreate: adminUserCreateReducer,
   // Thêm các reducers khác ở đây
 });
 

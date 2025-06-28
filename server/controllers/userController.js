@@ -523,9 +523,8 @@ const loginAdmin = asyncHandler(async (req, res) => {
     role: user.role,
     password: user.password
   } : null);
-
-  // So sánh mật khẩu trực tiếp vì trong database đang là plain text
-  if (user && user.password === password) {
+  // So sánh mật khẩu sử dụng bcrypt thông qua phương thức matchPassword
+  if (user && (await user.matchPassword(password))) {
     console.log('Backend - Password match successful');
     // Kiểm tra xem người dùng có phải là admin không
     if (user.role !== 'admin') {
@@ -553,6 +552,112 @@ const loginAdmin = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Lấy danh sách tất cả user (admin)
+// @route   GET /api/users
+// @access  Private/Admin
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({});
+  res.json(users);
+});
+
+// @desc    Lấy thông tin 1 user theo id (admin)
+// @route   GET /api/users/:id
+// @access  Private/Admin
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password');
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error('Không tìm thấy người dùng');
+  }
+});
+
+// @desc    Cập nhật user theo id (admin)
+// @route   PUT /api/users/:id
+// @access  Private/Admin
+const updateUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    user.user_name = req.body.user_name || user.user_name;
+    user.email = req.body.email || user.email;
+    user.phone_number = req.body.phone_number || user.phone_number;
+    user.birthday = req.body.birthday || user.birthday;
+    user.role = req.body.role || user.role;
+    user.profile_image = req.body.profile_image || user.profile_image;
+    user.is_verified = req.body.is_verified !== undefined ? req.body.is_verified : user.is_verified;
+    if (req.body.address) user.address = { ...user.address, ...req.body.address };
+    if (req.body.social_media) user.social_media = { ...user.social_media, ...req.body.social_media };
+    if (req.body.preferences) user.preferences = { ...user.preferences, ...req.body.preferences };
+    if (req.body.password) user.password = req.body.password;
+    const updatedUser = await user.save();
+    res.json(updatedUser);
+  } else {
+    res.status(404);
+    throw new Error('Không tìm thấy người dùng');
+  }
+});
+
+// @desc    Xóa user theo id (admin)
+// @route   DELETE /api/users/:id
+// @access  Private/Admin
+const deleteUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    // Sử dụng deleteOne thay vì remove (đã bị deprecated)
+    await User.deleteOne({ _id: req.params.id });
+    res.json({ message: 'Xóa người dùng thành công' });
+  } else {
+    res.status(404);
+    throw new Error('Không tìm thấy người dùng');
+  }
+});
+
+// @desc    Create user by admin
+// @route   POST /api/users
+// @access  Private/Admin
+const createUserByAdmin = asyncHandler(async (req, res) => {
+  const { user_name, email, password, phone_number, role } = req.body;
+
+  // Check if user exists
+  const userExists = await User.findOne({ 
+    $or: [
+      { email },
+      { user_name }
+    ]
+  });
+
+  if (userExists) {
+    res.status(400);
+    throw new Error('Email hoặc tên đăng nhập đã được sử dụng');
+  }
+
+  // Create user (already verified)
+  const user = await User.create({
+    user_name,
+    email,
+    password,
+    phone_number,
+    role: role || 'user',
+    is_verified: true // Admin-created users are automatically verified
+  });
+
+  if (user) {
+    res.status(201).json({
+      _id: user._id,
+      user_name: user.user_name,
+      email: user.email,
+      phone_number: user.phone_number,
+      role: user.role,
+      profile_image: user.profile_image,
+      is_verified: user.is_verified
+    });
+  } else {
+    res.status(400);
+    throw new Error('Dữ liệu người dùng không hợp lệ');
+  }
+});
+
 module.exports = {
   loginUser,
   registerUser,
@@ -569,4 +674,9 @@ module.exports = {
   resendOtp,
   registerAdmin,
   loginAdmin,
+  getAllUsers,
+  getUserById,
+  updateUserById,
+  deleteUserById,
+  createUserByAdmin,
 };

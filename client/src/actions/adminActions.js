@@ -9,6 +9,21 @@ import {
   ADMIN_GET_STATS_REQUEST,
   ADMIN_GET_STATS_SUCCESS,
   ADMIN_GET_STATS_FAIL,
+  ADMIN_USER_LIST_REQUEST,
+  ADMIN_USER_LIST_SUCCESS,
+  ADMIN_USER_LIST_FAIL,
+  ADMIN_USER_DETAILS_REQUEST,
+  ADMIN_USER_DETAILS_SUCCESS,
+  ADMIN_USER_DETAILS_FAIL,
+  ADMIN_USER_UPDATE_REQUEST,
+  ADMIN_USER_UPDATE_SUCCESS,
+  ADMIN_USER_UPDATE_FAIL,
+  ADMIN_USER_CREATE_REQUEST,
+  ADMIN_USER_CREATE_SUCCESS,
+  ADMIN_USER_CREATE_FAIL,
+  ADMIN_USER_DELETE_REQUEST,
+  ADMIN_USER_DELETE_SUCCESS,
+  ADMIN_USER_DELETE_FAIL,
 } from '../constants/adminConstants';
 import axios from 'axios';
 
@@ -28,10 +43,8 @@ export const loginAdmin = (username, password) => async (dispatch) => {
     };
 
     const requestBody = { user_name: username, password };
-    console.log('Frontend - Request body:', requestBody);
-
-    const { data } = await axios.post(
-      'http://localhost:5000/api/users/admin/login',
+    console.log('Frontend - Request body:', requestBody);    const { data } = await axios.post(
+      '/api/users/admin/login',
       requestBody,
       config
     );
@@ -72,10 +85,8 @@ export const registerAdmin = (user_name, email, password, phone_number, secretCo
       headers: {
         'Content-Type': 'application/json',
       },
-    };
-
-    const { data } = await axios.post(
-      'http://localhost:5000/api/users/admin/register',
+    };    const { data } = await axios.post(
+      '/api/users/admin/register',
       { user_name, email, password, phone_number, secretCode, role: 'admin' },
       config
     );
@@ -109,11 +120,34 @@ export const logoutAdmin = () => (dispatch) => {
   dispatch({ type: ADMIN_LOGOUT });
 };
 
-export const getAdminStats = (timeRange) => async (dispatch) => {
+export const getAdminStats = (timeRange) => async (dispatch, getState) => {
   try {
     dispatch({ type: ADMIN_GET_STATS_REQUEST });
+    
+    const { adminLogin: { adminInfo } } = getState();
+    
+    const config = {
+      headers: {
+        Authorization: `Bearer ${adminInfo.token}`
+      }
+    };
 
-    const { data } = await axios.get(`/api/admin/stats?timeRange=${timeRange}`);
+    // Giả lập dữ liệu thống kê do chưa có API thật
+    // Trong project thực tế, sẽ thay bằng gọi API: await axios.get(`/api/admin/stats?timeRange=${timeRange}`, config);
+    const data = {
+      totalUsers: 245,
+      totalBookings: 182,
+      totalRevenue: 42680000, 
+      totalProperties: 87,
+      recentUsers: [
+        { id: 1, user_name: 'Nguyễn Văn A', email: 'nguyenvana@example.com', created_at: '2025-05-30T14:10:30Z' },
+        { id: 2, user_name: 'Trần Thị B', email: 'tranthib@example.com', created_at: '2025-05-29T09:22:15Z' },
+        { id: 3, user_name: 'Lê Văn C', email: 'levanc@example.com', created_at: '2025-05-28T18:45:00Z' },
+      ],
+      recentBookings: [
+        { id: 101, user_name: 'Hoàng Văn E', property_name: 'Sunset Villa', amount: 2850000, status: 'confirmed', date: '2025-05-31T10:15:00Z' },
+      ]
+    };
 
     dispatch({
       type: ADMIN_GET_STATS_SUCCESS,
@@ -123,6 +157,143 @@ export const getAdminStats = (timeRange) => async (dispatch) => {
     dispatch({
       type: ADMIN_GET_STATS_FAIL,
       payload: error.response?.data?.message || 'Có lỗi xảy ra khi lấy thống kê',
+    });
+  }
+};
+
+// Lấy danh sách tất cả người dùng
+export const listUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADMIN_USER_LIST_REQUEST });
+
+    const { adminLogin: { adminInfo } } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${adminInfo.token}`
+      }
+    };    const { data } = await axios.get('/api/users', config);
+
+    dispatch({
+      type: ADMIN_USER_LIST_SUCCESS,
+      payload: data
+    });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_USER_LIST_FAIL,
+      payload: error.response?.data?.message || 'Có lỗi xảy ra khi lấy danh sách người dùng'
+    });
+  }
+};
+
+// Lấy thông tin chi tiết của một người dùng
+export const getUserDetails = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADMIN_USER_DETAILS_REQUEST });
+
+    const { adminLogin: { adminInfo } } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${adminInfo.token}`
+      }
+    };    const { data } = await axios.get(`/api/users/${id}`, config);
+
+    dispatch({
+      type: ADMIN_USER_DETAILS_SUCCESS,
+      payload: data
+    });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_USER_DETAILS_FAIL,
+      payload: error.response?.data?.message || 'Có lỗi xảy ra khi lấy thông tin người dùng'
+    });
+  }
+};
+
+// Cập nhật thông tin người dùng
+export const updateUser = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADMIN_USER_UPDATE_REQUEST });
+
+    const { adminLogin: { adminInfo } } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminInfo.token}`
+      }
+    };    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+
+    dispatch({
+      type: ADMIN_USER_UPDATE_SUCCESS,
+      payload: data
+    });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_USER_UPDATE_FAIL,
+      payload: error.response?.data?.message || 'Có lỗi xảy ra khi cập nhật thông tin người dùng'
+    });
+  }
+};
+
+// Xóa người dùng
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADMIN_USER_DELETE_REQUEST });
+
+    const { adminLogin: { adminInfo } } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${adminInfo.token}`
+      }
+    };
+
+    // Kiểm tra lỗi trong console để debug
+    console.log(`Deleting user with ID: ${id}`);
+    console.log(`Token being used: ${adminInfo.token}`);
+    
+    await axios.delete(`/api/users/${id}`, config);
+
+    dispatch({ type: ADMIN_USER_DELETE_SUCCESS });
+  } catch (error) {
+    console.error('Error deleting user:', error.response || error);
+    dispatch({
+      type: ADMIN_USER_DELETE_FAIL,
+      payload: error.response?.data?.message || 'Có lỗi xảy ra khi xóa người dùng'
+    });
+  }
+};
+
+// Tạo người dùng mới
+export const createUser = (userData) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: ADMIN_USER_CREATE_REQUEST });
+
+    const { adminLogin: { adminInfo } } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminInfo.token}`
+      }
+    };
+    
+    const { data } = await axios.post('/api/users', userData, config);
+
+    dispatch({
+      type: ADMIN_USER_CREATE_SUCCESS,
+      payload: data
+    });
+    
+    // Refresh the user list after creating a new user
+    dispatch(listUsers());
+    
+  } catch (error) {
+    dispatch({
+      type: ADMIN_USER_CREATE_FAIL,
+      payload: error.response?.data?.message || 'Có lỗi xảy ra khi tạo người dùng'
     });
   }
 };

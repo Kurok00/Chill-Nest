@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
+import UserManagement from '../../components/admin/UserManagement';
 
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
@@ -259,12 +260,7 @@ const AdminDashboardPage = () => {
           )}
 
           {activeTab === 'users' && (
-            <div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Quản lý Người dùng</h2>
-              <div className="bg-white shadow rounded-lg p-6">
-                <p className="text-gray-500">Nội dung quản lý người dùng sẽ hiển thị ở đây.</p>
-              </div>
-            </div>
+            <UserManagement />
           )}
 
           {activeTab === 'properties' && (
