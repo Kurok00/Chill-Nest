@@ -12,6 +12,12 @@ import {
   adminUserCreateReducer
 } from './reducers/adminReducers';
 
+import {
+  featuredPropertiesReducer,
+  popularLocationsReducer,
+  homeSearchReducer
+} from './reducers/homeReducers';
+
 // User Login Reducer
 const userLoginReducer = (state = {}, action) => {
   switch (action.type) {
@@ -159,6 +165,10 @@ const reducer = combineReducers({
   adminUserUpdate: adminUserUpdateReducer,
   adminUserDelete: adminUserDeleteReducer,
   adminUserCreate: adminUserCreateReducer,
+  // Home page reducers
+  featuredProperties: featuredPropertiesReducer,
+  popularLocations: popularLocationsReducer,
+  homeSearch: homeSearchReducer,
   // Thêm các reducers khác ở đây
 });
 

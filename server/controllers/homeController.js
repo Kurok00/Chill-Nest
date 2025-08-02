@@ -1,4 +1,5 @@
 const Home = require('../models/homeModel');
+const Location = require('../models/locationModel');
 const asyncHandler = require('express-async-handler');
 
 // @desc    Fetch all homes
@@ -159,6 +160,55 @@ const getTopRatedHomes = asyncHandler(async (req, res) => {
   res.json(homes);
 });
 
+// @desc    Admin: Fetch all homes (with full list, no pagination, for management)
+// @route   GET /api/admin/properties
+// @access  Private/Admin
+const adminGetAllHomes = asyncHandler(async (req, res) => {
+  const homes = await Home.find({});
+  res.json(homes);
+});
+
+// @desc    Admin: Create a home (property)
+// @route   POST /api/admin/properties
+// @access  Private/Admin
+const adminCreateHome = asyncHandler(async (req, res) => {
+  const home = new Home({
+    ...req.body,
+    host_id: req.body.host_id || req.user._id,
+  });
+  const createdHome = await home.save();
+  res.status(201).json(createdHome);
+});
+
+// @desc    Admin: Update a home (property)
+// @route   PUT /api/admin/properties/:id
+// @access  Private/Admin
+const adminUpdateHome = asyncHandler(async (req, res) => {
+  const home = await Home.findById(req.params.id);
+  if (home) {
+    Object.assign(home, req.body);
+    const updatedHome = await home.save();
+    res.json(updatedHome);
+  } else {
+    res.status(404);
+    throw new Error('Home not found');
+  }
+});
+
+// @desc    Admin: Delete a home (property)
+// @route   DELETE /api/admin/properties/:id
+// @access  Private/Admin
+const adminDeleteHome = asyncHandler(async (req, res) => {
+  const home = await Home.findById(req.params.id);
+  if (home) {
+    await Home.deleteOne({ _id: req.params.id });
+    res.json({ message: 'Home removed' });
+  } else {
+    res.status(404);
+    throw new Error('Home not found');
+  }
+});
+
 module.exports = {
   getHomes,
   getHomeById,
@@ -166,4 +216,8 @@ module.exports = {
   updateHome,
   deleteHome,
   getTopRatedHomes,
+  adminGetAllHomes,
+  adminCreateHome,
+  adminUpdateHome,
+  adminDeleteHome,
 };

@@ -15,6 +15,11 @@ const AdminLoginPage = () => {
   const adminLogin = useSelector((state) => state.adminLogin);
   const { loading, error, adminInfo } = adminLogin || {};
 
+  // Xóa localStorage adminInfo khi vào trang login admin
+  useEffect(() => {
+    localStorage.removeItem('adminInfo');
+  }, []);
+
   useEffect(() => {
     // Nếu admin đã đăng nhập, chuyển hướng đến trang admin dashboard
     if (adminInfo) {

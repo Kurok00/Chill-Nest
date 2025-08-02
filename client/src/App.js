@@ -12,6 +12,7 @@ import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminRegisterPage from './pages/admin/AdminRegisterPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminProtectedRoute from './components/admin/AdminProtectedRoute';
+import AdminPropertiesPage from './pages/admin/AdminPropertiesPage';
 
 function AppContent() {
   const location = useLocation();
@@ -46,7 +47,7 @@ function AppContent() {
           } />
           <Route path="/admin/properties" element={
             <AdminProtectedRoute>
-              <AdminDashboardPage />
+              <AdminPropertiesPage />
             </AdminProtectedRoute>
           } />
           <Route path="/admin/bookings" element={

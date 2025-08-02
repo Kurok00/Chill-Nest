@@ -62,6 +62,7 @@ export const loginAdmin = (username, password) => async (dispatch) => {
     });
 
     localStorage.setItem('adminInfo', JSON.stringify(data));
+    localStorage.setItem('adminToken', data.token); // Thêm dòng này để lưu token riêng
   } catch (error) {
     console.error('Frontend - Login error:', error.response?.data || error.message);
     dispatch({

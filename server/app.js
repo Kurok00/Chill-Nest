@@ -4,6 +4,8 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const adminRoutes = require('./routes/adminRoutes');
+const amenityRoutes = require('./routes/amenityRoutes');
+const locationRoutes = require('./routes/locationRoutes');
 
 const app = express();
 
@@ -14,6 +16,8 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/api/users/admin', adminRoutes);
+app.use('/api', amenityRoutes);
+app.use('/api', locationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import UserManagement from '../../components/admin/UserManagement';
+import PropertyManagement from '../../components/admin/PropertyManagement';
+import RoomManagement from '../../components/admin/RoomManagement';
 
 const AdminDashboardPage = () => {
   const navigate = useNavigate();
@@ -121,57 +123,57 @@ const AdminDashboardPage = () => {
               
               {/* Stats Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-blue-500 hover:transform hover:scale-105 transition duration-300">
+                <div className="bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-primary hover:transform hover:scale-105 transition duration-300">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-blue-900 mr-4">
-                      <svg className="h-8 w-8 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="p-3 rounded-full bg-primary mr-4">
+                      <svg className="h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-gray-400 text-sm">Tổng người dùng</p>
+                      <p className="text-secondary text-sm">Tổng người dùng</p>
                       <p className="text-2xl font-bold text-white">{stats.totalUsers.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-green-500 hover:transform hover:scale-105 transition duration-300">
+                <div className="bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-secondary hover:transform hover:scale-105 transition duration-300">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-green-900 mr-4">
-                      <svg className="h-8 w-8 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="p-3 rounded-full bg-secondary mr-4">
+                      <svg className="h-8 w-8 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-gray-400 text-sm">Tổng đặt phòng</p>
+                      <p className="text-secondary text-sm">Tổng đặt phòng</p>
                       <p className="text-2xl font-bold text-white">{stats.totalBookings.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-yellow-500 hover:transform hover:scale-105 transition duration-300">
+                <div className="bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-accent hover:transform hover:scale-105 transition duration-300">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-yellow-900 mr-4">
-                      <svg className="h-8 w-8 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="p-3 rounded-full bg-accent mr-4">
+                      <svg className="h-8 w-8 text-accent" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-gray-400 text-sm">Tổng doanh thu</p>
+                      <p className="text-secondary text-sm">Tổng doanh thu</p>
                       <p className="text-2xl font-bold text-white">{formatCurrency(stats.totalRevenue)}</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-purple-500 hover:transform hover:scale-105 transition duration-300">
+                <div className="bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-primary hover:transform hover:scale-105 transition duration-300">
                   <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-purple-900 mr-4">
-                      <svg className="h-8 w-8 text-purple-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="p-3 rounded-full bg-primary mr-4">
+                      <svg className="h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-gray-400 text-sm">Tổng chỗ ở</p>
+                      <p className="text-secondary text-sm">Tổng chỗ ở</p>
                       <p className="text-2xl font-bold text-white">{stats.totalProperties.toLocaleString()}</p>
                     </div>
                   </div>
@@ -210,7 +212,7 @@ const AdminDashboardPage = () => {
                     </ul>
                     <div className="mt-4 text-center">
                       <button
-                        className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                        className="text-sm text-primary hover:text-primary-dark font-medium"
                         onClick={() => setActiveTab('users')}
                       >
                         Xem tất cả người dùng
@@ -247,7 +249,7 @@ const AdminDashboardPage = () => {
                     </ul>
                     <div className="mt-4 text-center">
                       <button
-                        className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                        className="text-sm text-primary hover:text-primary-dark font-medium"
                         onClick={() => setActiveTab('bookings')}
                       >
                         Xem tất cả đặt phòng

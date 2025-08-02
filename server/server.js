@@ -16,6 +16,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const voucherRoutes = require('./routes/voucherRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const promotionRoutes = require('./routes/promotionRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Connect to database
 connectDB();
@@ -39,6 +40,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/vouchers', voucherRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/promotions', promotionRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
